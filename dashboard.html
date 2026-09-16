@@ -1,755 +1,446 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard | SmartHome AI</title>
+    <title>Smart Home AI | Dashboard</title>
 
     <link rel="stylesheet" href="style.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
 
-<nav class="navbar">
+    <!-- NAVBAR -->
+    <nav class="navbar">
 
-    <a href="index.html" class="brand">
-
-        <div class="brand-icon">⌂</div>
-
-        <div>
-            <strong>SmartHome AI</strong>
-            <span>Energy Management Agent</span>
+        <div class="logo">
+            🏠 SmartHome<span>AI</span>
         </div>
 
-    </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="simulation.html">Simulation</a>
+        </div>
 
+    </nav>
 
-    <div class="nav-links">
-
-        <a href="index.html">Home</a>
-
-        <a href="dashboard.html" class="active">
-            Dashboard
-        </a>
-
-        <a href="analytics.html">
-            Analytics
-        </a>
-
-    </div>
-
-
-    <div class="online-status">
-        <span></span> AI Online
-    </div>
-
-</nav>
-
-
-<main class="dashboard-page">
 
     <!-- PAGE HEADER -->
 
-    <section class="page-header">
+    <main class="page-container">
 
-        <div>
-
-            <div class="hero-label">
-                LIVE SIMULATION
-            </div>
-
-            <h1>
-                Smart Home Dashboard
-            </h1>
-
-            <p>
-                Monitor your home and see how the AI agent responds
-                to changing environmental conditions.
-            </p>
-
-        </div>
-
-
-        <div class="simulation-pill">
-            <span></span>
-            Simulation Mode
-        </div>
-
-    </section>
-
-
-    <!-- SUMMARY -->
-
-    <section class="summary-grid">
-
-        <div class="summary-card">
-
-            <div class="summary-top">
-
-                <span>🌡️</span>
-
-                <small>Temperature</small>
-
-            </div>
-
-            <strong id="summaryTemperature">
-                27°C
-            </strong>
-
-            <p>Room temperature</p>
-
-        </div>
-
-
-        <div class="summary-card">
-
-            <div class="summary-top">
-
-                <span>⚡</span>
-
-                <small>Current Usage</small>
-
-            </div>
-
-            <strong id="summaryEnergy">
-                2.4 kW
-            </strong>
-
-            <p id="summaryEnergyStatus">
-                Normal consumption
-            </p>
-
-        </div>
-
-
-        <div class="summary-card">
-
-            <div class="summary-top">
-
-                <span>💰</span>
-
-                <small>Today's Cost</small>
-
-            </div>
-
-            <strong id="summaryCost">
-                ₹40.32
-            </strong>
-
-            <p>Estimated</p>
-
-        </div>
-
-
-        <div class="summary-card">
-
-            <div class="summary-top">
-
-                <span>🧠</span>
-
-                <small>AI Efficiency</small>
-
-            </div>
-
-            <strong id="efficiency">
-                84%
-            </strong>
-
-            <p>Energy optimization</p>
-
-        </div>
-
-    </section>
-
-
-    <!-- SENSORS -->
-
-    <section class="dashboard-block">
-
-        <div class="block-header">
+        <section class="page-heading">
 
             <div>
+                <span class="eyebrow">SMART HOME CONTROL CENTER</span>
 
-                <div class="hero-label">
-                    SENSOR INPUT
-                </div>
+                <h1>
+                    Energy Management
+                    <span>Dashboard</span>
+                </h1>
 
-                <h2>
-                    Environment
-                </h2>
-
+                <p>
+                    Monitor your home, analyze energy usage,
+                    and let the AI agent make intelligent decisions.
+                </p>
             </div>
 
-            <span class="live-label">
-                ● LIVE
-            </span>
+            <div class="live-status">
+                <span class="status-dot"></span>
+                System Online
+            </div>
 
-        </div>
-
-
-        <div class="sensor-grid-new">
+        </section>
 
 
-            <!-- TEMPERATURE -->
+        <!-- SENSOR CARDS -->
 
-            <div class="control-card">
+        <section class="sensor-grid">
 
-                <div class="control-heading">
+            <div class="sensor-card">
 
-                    <div class="large-control-icon">
-                        🌡️
-                    </div>
+                <div class="sensor-icon">🌡️</div>
 
-                    <div>
-                        <small>Temperature</small>
-
-                        <h3 id="temperatureDisplay">
-                            27°C
-                        </h3>
-                    </div>
-
-                </div>
-
-
-                <input
-                    type="range"
-                    id="temperature"
-                    min="15"
-                    max="40"
-                    value="27"
-                    oninput="updateAgent()"
-                >
-
-
-                <div class="range-labels">
-                    <span>15°C</span>
-                    <span>40°C</span>
+                <div>
+                    <p>Temperature</p>
+                    <h2>
+                        <span id="dashboardTemperature">30</span>°C
+                    </h2>
                 </div>
 
             </div>
 
 
-            <!-- OCCUPANCY -->
+            <div class="sensor-card">
 
-            <div class="control-card">
+                <div class="sensor-icon">🚶</div>
 
-                <div class="control-heading">
-
-                    <div class="large-control-icon">
-                        🚶
-                    </div>
-
-                    <div>
-
-                        <small>Occupancy</small>
-
-                        <h3 id="occupancyDisplay">
-                            Detected
-                        </h3>
-
-                    </div>
-
-                </div>
-
-
-                <select
-                    id="occupancy"
-                    onchange="updateAgent()"
-                >
-
-                    <option value="present">
-                        Person Detected
-                    </option>
-
-                    <option value="absent">
-                        No Person
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- LIGHT -->
-
-            <div class="control-card">
-
-                <div class="control-heading">
-
-                    <div class="large-control-icon">
-                        💡
-                    </div>
-
-                    <div>
-
-                        <small>Light Intensity</small>
-
-                        <h3 id="lightDisplay">
-                            40%
-                        </h3>
-
-                    </div>
-
-                </div>
-
-
-                <input
-                    type="range"
-                    id="light"
-                    min="0"
-                    max="100"
-                    value="40"
-                    oninput="updateAgent()"
-                >
-
-
-                <div class="range-labels">
-                    <span>Dark</span>
-                    <span>Bright</span>
+                <div>
+                    <p>Motion</p>
+                    <h2 id="dashboardMotion">
+                        Detected
+                    </h2>
                 </div>
 
             </div>
 
 
-            <!-- ENERGY -->
+            <div class="sensor-card">
 
-            <div class="control-card">
+                <div class="sensor-icon">💡</div>
 
-                <div class="control-heading">
-
-                    <div class="large-control-icon">
-                        ⚡
-                    </div>
-
-                    <div>
-
-                        <small>Energy Usage</small>
-
-                        <h3 id="energySensorDisplay">
-                            2.4 kW
-                        </h3>
-
-                    </div>
-
-                </div>
-
-
-                <input
-                    type="range"
-                    id="energy"
-                    min="0"
-                    max="10"
-                    step="0.1"
-                    value="2.4"
-                    oninput="updateAgent()"
-                >
-
-
-                <div class="range-labels">
-                    <span>0 kW</span>
-                    <span>10 kW</span>
+                <div>
+                    <p>Light Level</p>
+                    <h2>
+                        <span id="dashboardLight">30</span>%
+                    </h2>
                 </div>
 
             </div>
 
-        </div>
 
-    </section>
+            <div class="sensor-card">
 
+                <div class="sensor-icon">⚡</div>
 
-    <!-- AI AGENT -->
-
-    <section class="ai-dashboard">
-
-        <div class="ai-dashboard-header">
-
-            <div class="ai-heading">
-
-                <div class="ai-symbol">
-                    ✦
+                <div>
+                    <p>Energy Usage</p>
+                    <h2>
+                        <span id="dashboardEnergy">3.2</span> kW
+                    </h2>
                 </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- AI AGENT -->
+
+        <section class="ai-panel">
+
+            <div class="ai-header">
 
                 <div>
 
-                    <small>INTELLIGENT AGENT</small>
+                    <span class="ai-badge">
+                        🤖 GEMINI AI AGENT
+                    </span>
 
                     <h2>
-                        AI Decision Engine
+                        Intelligent Decision Center
                     </h2>
 
-                </div>
-
-            </div>
-
-
-            <div class="agent-status">
-                ● ANALYZING
-            </div>
-
-        </div>
-
-
-        <div class="ai-main-content">
-
-
-            <div class="decision-box">
-
-                <small>
-                    CURRENT DECISION
-                </small>
-
-                <h2 id="decision">
-                    Monitoring environment
-                </h2>
-
-                <p id="reason">
-                    The AI agent is analyzing sensor information.
-                </p>
-
-            </div>
-
-
-            <div class="agent-pipeline">
-
-                <div class="pipeline-item active">
-
-                    <span>01</span>
-
-                    <div>
-                        <strong>Observe</strong>
-                        <small>Sensor data</small>
-                    </div>
-
-                </div>
-
-
-                <div class="pipeline-arrow">
-                    →
-                </div>
-
-
-                <div class="pipeline-item active">
-
-                    <span>02</span>
-
-                    <div>
-                        <strong>Decide</strong>
-                        <small>AI analysis</small>
-                    </div>
-
-                </div>
-
-
-                <div class="pipeline-arrow">
-                    →
-                </div>
-
-
-                <div class="pipeline-item active">
-
-                    <span>03</span>
-
-                    <div>
-                        <strong>Act</strong>
-                        <small>Appliances</small>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- APPLIANCES -->
-
-    <section class="dashboard-block">
-
-        <div class="block-header">
-
-            <div>
-
-                <div class="hero-label">
-                    ACTUATORS
-                </div>
-
-                <h2>
-                    Smart Appliances
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="appliance-grid-new">
-
-
-            <div class="appliance-card-new" id="lightCard">
-
-                <div class="appliance-card-top">
-
-                    <div class="appliance-big-icon">
-                        💡
-                    </div>
-
-                    <span id="lightStatus" class="state-on">
-                        ON
-                    </span>
-
-                </div>
-
-                <h3>
-                    Smart Light
-                </h3>
-
-                <p>
-                    Automatic lighting control
-                </p>
-
-                <div class="appliance-power">
-                    <span>Power</span>
-                    <strong>0.06 kW</strong>
-                </div>
-
-            </div>
-
-
-            <div class="appliance-card-new" id="fanCard">
-
-                <div class="appliance-card-top">
-
-                    <div class="appliance-big-icon">
-                        🌀
-                    </div>
-
-                    <span id="fanStatus" class="state-on">
-                        ON
-                    </span>
-
-                </div>
-
-                <h3>
-                    Smart Fan
-                </h3>
-
-                <p>
-                    Temperature-based control
-                </p>
-
-                <div class="appliance-power">
-                    <span>Power</span>
-                    <strong>0.08 kW</strong>
-                </div>
-
-            </div>
-
-
-            <div class="appliance-card-new" id="acCard">
-
-                <div class="appliance-card-top">
-
-                    <div class="appliance-big-icon">
-                        ❄️
-                    </div>
-
-                    <span id="acStatus" class="state-off">
-                        OFF
-                    </span>
-
-                </div>
-
-                <h3>
-                    Smart AC
-                </h3>
-
-                <p>
-                    Intelligent cooling control
-                </p>
-
-                <div class="appliance-power">
-                    <span>Power</span>
-                    <strong>1.50 kW</strong>
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ROOMS -->
-
-    <section class="dashboard-block">
-
-        <div class="block-header">
-
-            <div>
-
-                <div class="hero-label">
-                    HOME OVERVIEW
-                </div>
-
-                <h2>
-                    Rooms
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="room-grid">
-
-            <div class="room-card">
-
-                <div class="room-icon">
-                    🛋️
-                </div>
-
-                <div>
-
-                    <h3>Living Room</h3>
-
                     <p>
-                        Main monitored area
+                        The AI analyzes sensor data and decides
+                        how your appliances should operate.
                     </p>
 
                 </div>
 
-                <div class="room-state">
-                    Active
+
+                <div id="aiStatus" class="ai-status">
+                    ● READY
                 </div>
 
             </div>
 
 
-            <div class="room-card">
+            <!-- CURRENT SITUATION -->
 
-                <div class="room-icon">
-                    🛏️
+            <div class="ai-situation">
+
+                <div class="section-label">
+                    CURRENT SITUATION
                 </div>
 
-                <div>
-
-                    <h3>Bedroom</h3>
-
-                    <p>
-                        Low activity
-                    </p>
-
-                </div>
-
-                <div class="room-state off">
-                    Standby
-                </div>
-
-            </div>
-
-
-            <div class="room-card">
-
-                <div class="room-icon">
-                    🍳
-                </div>
-
-                <div>
-
-                    <h3>Kitchen</h3>
-
-                    <p>
-                        Appliance monitoring
-                    </p>
-
-                </div>
-
-                <div class="room-state">
-                    Active
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ACTIVITY -->
-
-    <section class="dashboard-block">
-
-        <div class="block-header">
-
-            <div>
-
-                <div class="hero-label">
-                    AI ACTIVITY
-                </div>
-
-                <h2>
-                    Decision Log
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div id="activityLog" class="activity-log">
-
-            <div class="log-item">
-
-                <span>
-                    Now
-                </span>
-
-                <p>
-                    AI agent initialized and monitoring the environment.
+                <p id="aiSituation">
+                    Waiting for the AI agent to analyze
+                    your smart home.
                 </p>
 
             </div>
 
-        </div>
 
-    </section>
+            <!-- AI DECISION -->
 
+            <div class="ai-decision-box">
 
-    <div class="dashboard-footer-link">
+                <div class="section-label">
+                    AI DECISION
+                </div>
 
-        <a href="analytics.html" class="primary-btn">
-            View Energy Analytics →
-        </a>
+                <h3 id="aiDecision">
+                    No decision generated yet
+                </h3>
 
-    </div>
+                <p id="aiReasoning">
+                    Click "Ask AI Agent" to allow Gemini
+                    to analyze the current environment.
+                </p>
 
-</main>
-
-
-<footer>
-
-    <div>
-        <strong>SmartHome AI</strong>
-        <p>AI-Based Smart Home Energy Management Agent</p>
-    </div>
-
-    <div>
-        Academic Project • Simulation Mode
-    </div>
-
-</footer>
+            </div>
 
 
-<script src="script.js"></script>
+            <!-- APPLIANCE DECISIONS -->
+
+            <div class="section-label appliance-title">
+                APPLIANCE ACTIONS
+            </div>
+
+
+            <div class="ai-grid">
+
+                <div class="ai-card">
+
+                    <span>💡</span>
+
+                    <small>LIGHT</small>
+
+                    <strong id="aiLight">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="ai-card">
+
+                    <span>🌀</span>
+
+                    <small>FAN</small>
+
+                    <strong id="aiFan">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="ai-card">
+
+                    <span>❄️</span>
+
+                    <small>AC</small>
+
+                    <strong id="aiAC">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <div class="ai-card">
+
+                    <span>⚡</span>
+
+                    <small>HIGH POWER</small>
+
+                    <strong id="aiPower">
+                        --
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- CONFIDENCE -->
+
+            <div class="ai-footer">
+
+                <div class="confidence-wrapper">
+
+                    <div class="confidence-heading">
+
+                        <span>
+                            AI Confidence
+                        </span>
+
+                        <strong id="confidenceText">
+                            --%
+                        </strong>
+
+                    </div>
+
+                    <div class="confidence-bar">
+
+                        <div id="confidenceBar"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ENERGY ADVICE -->
+
+            <div class="ai-advice">
+
+                <div class="advice-icon">
+                    ⚡
+                </div>
+
+                <div>
+
+                    <strong>
+                        Energy Optimization Advice
+                    </strong>
+
+                    <p id="energyAdvice">
+                        AI-generated energy recommendations
+                        will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTON -->
+
+            <button
+                id="runAIButton"
+                onclick="runAIAgent()"
+            >
+                🤖 Ask AI Agent
+            </button>
+
+        </section>
+
+
+        <!-- APPLIANCE STATUS -->
+
+        <section class="appliance-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="eyebrow">
+                        SMART APPLIANCES
+                    </span>
+
+                    <h2>
+                        Current Appliance Status
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <div class="appliance-grid">
+
+                <div class="appliance-card">
+
+                    <div class="appliance-top">
+                        <span class="big-icon">💡</span>
+
+                        <span
+                            id="lightStatus"
+                            class="device-status"
+                        >
+                            ON
+                        </span>
+                    </div>
+
+                    <h3>Smart Lights</h3>
+
+                    <p>
+                        Automatically adjusts lighting
+                        according to room conditions.
+                    </p>
+
+                </div>
+
+
+                <div class="appliance-card">
+
+                    <div class="appliance-top">
+                        <span class="big-icon">🌀</span>
+
+                        <span
+                            id="fanStatus"
+                            class="device-status"
+                        >
+                            ON
+                        </span>
+                    </div>
+
+                    <h3>Smart Fan</h3>
+
+                    <p>
+                        Provides cooling when the room
+                        temperature increases.
+                    </p>
+
+                </div>
+
+
+                <div class="appliance-card">
+
+                    <div class="appliance-top">
+                        <span class="big-icon">❄️</span>
+
+                        <span
+                            id="acStatus"
+                            class="device-status"
+                        >
+                            OFF
+                        </span>
+                    </div>
+
+                    <h3>Air Conditioner</h3>
+
+                    <p>
+                        Maintains comfortable temperature
+                        while considering energy consumption.
+                    </p>
+
+                </div>
+
+
+                <div class="appliance-card">
+
+                    <div class="appliance-top">
+                        <span class="big-icon">🔌</span>
+
+                        <span
+                            id="powerStatus"
+                            class="device-status"
+                        >
+                            ON
+                        </span>
+                    </div>
+
+                    <h3>High-Power Devices</h3>
+
+                    <p>
+                        AI monitors unnecessary high-energy
+                        appliance usage.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            SmartHomeAI • AI-Based Smart Home Energy Management
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
 
 </body>
 </html>

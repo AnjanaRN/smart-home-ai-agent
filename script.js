@@ -1,650 +1,908 @@
-/*
-====================================================
-SMART HOME AI AGENT
-====================================================
-
-The agent follows:
-
-OBSERVE → DECIDE → ACT
-
-Inputs:
-- Temperature
-- Occupancy
-- Light intensity
-- Energy consumption
-
-Outputs:
-- Light
-- Fan
-- AC
-- Energy alert
-
-====================================================
-*/
+/* ==========================================
+   SMART HOME AI
+   MAIN JAVASCRIPT
+========================================== */
 
 
-let lastDecision = "";
+/* ==========================================
+   SIMULATION STATE
+========================================== */
+
+let simulationState = {
+
+    temperature: 30,
+
+    motion: true,
+
+    lightLevel: 30,
+
+    energyUsage: 3.2
+
+};
 
 
-/*
-----------------------------------------------------
-MAIN AI FUNCTION
-----------------------------------------------------
-*/
+/* ==========================================
+   INITIALIZATION
+========================================== */
 
-function updateAgent() {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
-    const temperatureElement =
-        document.getElementById("temperature");
+        updateClock();
 
-    const occupancyElement =
-        document.getElementById("occupancy");
+        setInterval(
+            updateClock,
+            1000
+        );
 
-    const lightElement =
-        document.getElementById("light");
+        updateSimulation();
 
-    const energyElement =
-        document.getElementById("energy");
+        loadDashboardData();
+
+    }
+);
 
 
-    // If this page does not contain the controls,
-    // stop the function.
+/* ==========================================
+   CLOCK
+========================================== */
 
-    if (
-        !temperatureElement ||
-        !occupancyElement ||
-        !lightElement ||
-        !energyElement
-    ) {
+function updateClock() {
+
+    const timeElement =
+        document.getElementById(
+            "currentTime"
+        );
+
+    if (!timeElement) {
         return;
     }
 
 
-    /*
-    ============================
-    OBSERVE
-    ============================
-    */
+    const now = new Date();
+
+
+    timeElement.textContent =
+        now.toLocaleTimeString(
+            [],
+            {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            }
+        );
+
+}
+
+
+/* ==========================================
+   SIMULATION
+========================================== */
+
+function updateSimulation() {
 
     const temperature =
-        Number(temperatureElement.value);
-
-    const occupancy =
-        occupancyElement.value;
+        document.getElementById(
+            "temperature"
+        );
 
     const light =
-        Number(lightElement.value);
+        document.getElementById(
+            "lightLevel"
+        );
 
     const energy =
-        Number(energyElement.value);
+        document.getElementById(
+            "energyUsage"
+        );
+
+    const motion =
+        document.getElementById(
+            "motion"
+        );
 
 
-    /*
-    ============================
-    UPDATE SENSOR DISPLAY
-    ============================
-    */
+    if (!temperature) {
+        return;
+    }
+
+
+    simulationState.temperature =
+        parseFloat(
+            temperature.value
+        );
+
+
+    simulationState.lightLevel =
+        parseFloat(
+            light.value
+        );
+
+
+    simulationState.energyUsage =
+        parseFloat(
+            energy.value
+        );
+
+
+    simulationState.motion =
+        motion.checked;
+
+
+    /* DISPLAY VALUES */
 
     setText(
-        "temperatureDisplay",
-        temperature + "°C"
+        "temperatureValue",
+        simulationState.temperature
     );
 
     setText(
-        "occupancyDisplay",
-        occupancy === "present"
-            ? "Detected"
+        "lightValue",
+        simulationState.lightLevel
+    );
+
+    setText(
+        "energyValue",
+        simulationState.energyUsage.toFixed(1)
+    );
+
+
+    setText(
+        "previewTemperature",
+        simulationState.temperature + "°C"
+    );
+
+
+    setText(
+        "previewLightText",
+        simulationState.lightLevel + "%"
+    );
+
+
+    setText(
+        "previewEnergy",
+        simulationState.energyUsage.toFixed(1) + " kW"
+    );
+
+
+    setText(
+        "previewMotion",
+        simulationState.motion
+            ? "Occupied"
             : "Empty"
     );
 
-    setText(
-        "lightDisplay",
-        light + "%"
-    );
 
-    setText(
-        "energySensorDisplay",
-        energy.toFixed(1) + " kW"
-    );
+    /* PERSON */
 
-
-    /*
-    ============================
-    UPDATE SUMMARY
-    ============================
-    */
-
-    setText(
-        "summaryTemperature",
-        temperature + "°C"
-    );
-
-    setText(
-        "summaryEnergy",
-        energy.toFixed(1) + " kW"
-    );
-
-
-    /*
-    ============================
-    AI DECISION
-    ============================
-    */
-
-    let lightState = false;
-
-    let fanState = false;
-
-    let acState = false;
-
-    let decision = "";
-
-    let reason = "";
-
-
-    /*
-    CASE 1:
-    Nobody is present
-    */
-
-    if (occupancy === "absent") {
-
-        lightState = false;
-
-        fanState = false;
-
-        acState = false;
-
-        decision =
-            "Switching appliances OFF";
-
-        reason =
-            "No person is detected in the room, so the agent is reducing unnecessary energy consumption.";
-
-    }
-
-
-    /*
-    CASE 2:
-    Person is present
-    */
-
-    else {
-
-        /*
-        Lighting
-        */
-
-        if (light < 45) {
-
-            lightState = true;
-
-        }
-
-
-        /*
-        Fan
-        */
-
-        if (temperature >= 27) {
-
-            fanState = true;
-
-        }
-
-
-        /*
-        AC
-        */
-
-        if (temperature >= 30) {
-
-            acState = true;
-
-            fanState = true;
-
-        }
-
-
-        /*
-        AI explanation
-        */
-
-        if (
-            temperature >= 30 &&
-            light < 45
-        ) {
-
-            decision =
-                "Turn ON AC + Light";
-
-            reason =
-                "A person is present, the temperature is high and the room has low light.";
-
-        }
-
-        else if (temperature >= 30) {
-
-            decision =
-                "Turn ON AC";
-
-            reason =
-                "High temperature detected while a person is present.";
-
-        }
-
-        else if (temperature >= 27) {
-
-            decision =
-                "Turn ON Fan";
-
-            reason =
-                "Temperature is moderately high, so the AI activates cooling.";
-
-        }
-
-        else if (light < 45) {
-
-            decision =
-                "Turn ON Light";
-
-            reason =
-                "A person is present and the room has insufficient light.";
-
-        }
-
-        else {
-
-            decision =
-                "Maintain Current State";
-
-            reason =
-                "The environment is comfortable and no additional action is required.";
-
-        }
-
-    }
-
-
-    /*
-    HIGH ENERGY CONDITION
-    */
-
-    if (energy >= 7) {
-
-        decision =
-            "Reduce Energy Consumption";
-
-        reason =
-            "Energy usage is unusually high. The AI recommends reducing unnecessary appliance usage.";
-
-    }
-
-
-    /*
-    ============================
-    DECISION DISPLAY
-    ============================
-    */
-
-    setText(
-        "decision",
-        decision
-    );
-
-    setText(
-        "reason",
-        reason
-    );
-
-
-    /*
-    ============================
-    ACT
-    ============================
-    */
-
-    updateAppliance(
-        "lightCard",
-        "lightStatus",
-        lightState
-    );
-
-    updateAppliance(
-        "fanCard",
-        "fanStatus",
-        fanState
-    );
-
-    updateAppliance(
-        "acCard",
-        "acStatus",
-        acState
-    );
-
-
-    /*
-    ============================
-    ENERGY CALCULATIONS
-    ============================
-    */
-
-    calculateEnergy(
-        energy,
-        temperature
-    );
-
-
-    /*
-    ============================
-    ACTIVITY LOG
-    ============================
-    */
-
-    if (
-        decision !== lastDecision
-    ) {
-
-        addLog(decision);
-
-        lastDecision = decision;
-
-    }
-
-}
-
-
-/*
-----------------------------------------------------
-ENERGY CALCULATIONS
-----------------------------------------------------
-*/
-
-function calculateEnergy(
-    energy,
-    temperature
-) {
-
-    /*
-    We assume the current energy
-    consumption continues for 7.2 hours.
-
-    Energy = Power × Time
-    */
-
-    const dailyHours = 7.2;
-
-    const dailyEnergy =
-        energy * dailyHours;
-
-
-    /*
-    Assumed electricity tariff
-    */
-
-    const tariff = 2.33;
-
-
-    /*
-    Cost = Energy × Tariff
-    */
-
-    const dailyCost =
-        dailyEnergy * tariff;
-
-
-    /*
-    Monthly estimate
-    */
-
-    const monthlyCost =
-        dailyCost * 30;
-
-
-    /*
-    AI efficiency
-
-    Higher temperature and unnecessary
-    usage reduce efficiency.
-    */
-
-    let efficiency = 90;
-
-    if (temperature >= 30) {
-
-        efficiency -= 8;
-
-    }
-
-    if (energy >= 5) {
-
-        efficiency -= 7;
-
-    }
-
-    if (energy >= 7) {
-
-        efficiency -= 10;
-
-    }
-
-    efficiency =
-        Math.max(50, efficiency);
-
-
-    /*
-    Update page
-    */
-
-    setText(
-        "summaryCost",
-        "₹" + dailyCost.toFixed(2)
-    );
-
-    setText(
-        "efficiency",
-        efficiency + "%"
-    );
-
-
-    /*
-    Energy status
-    */
-
-    const statusElement =
+    const person =
         document.getElementById(
-            "summaryEnergyStatus"
+            "previewPerson"
         );
 
 
-    if (statusElement) {
+    if (person) {
 
-        if (energy >= 7) {
-
-            statusElement.textContent =
-                "High consumption";
-
-        }
-
-        else if (energy >= 4) {
-
-            statusElement.textContent =
-                "Moderate consumption";
-
-        }
-
-        else {
-
-            statusElement.textContent =
-                "Normal consumption";
-
-        }
+        person.classList.toggle(
+            "hidden",
+            !simulationState.motion
+        );
 
     }
 
 
-    /*
-    Analytics page values
-    */
+    /* LIGHT */
+
+    const roomLight =
+        document.getElementById(
+            "previewLight"
+        );
+
+
+    if (roomLight) {
+
+        roomLight.classList.toggle(
+            "on",
+            simulationState.lightLevel < 50 &&
+            simulationState.motion
+        );
+
+    }
+
+
+    /* AUTOMATIC PREVIEW */
+
+    const fan =
+        document.getElementById(
+            "previewFan"
+        );
+
+    const ac =
+        document.getElementById(
+            "previewAC"
+        );
+
+
+    if (fan) {
+
+        fan.classList.toggle(
+            "active",
+            simulationState.temperature >= 28 &&
+            simulationState.motion
+        );
+
+    }
+
+
+    if (ac) {
+
+        ac.classList.toggle(
+            "active",
+            simulationState.temperature >= 32 &&
+            simulationState.motion
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   RESET
+========================================== */
+
+function resetSimulation() {
+
+    const temperature =
+        document.getElementById(
+            "temperature"
+        );
+
+    const light =
+        document.getElementById(
+            "lightLevel"
+        );
+
+    const energy =
+        document.getElementById(
+            "energyUsage"
+        );
+
+    const motion =
+        document.getElementById(
+            "motion"
+        );
+
+
+    if (!temperature) {
+        return;
+    }
+
+
+    temperature.value = 30;
+
+    light.value = 30;
+
+    energy.value = 3.2;
+
+    motion.checked = true;
+
+
+    updateSimulation();
+
 
     setText(
-        "analyticsUsage",
-        dailyEnergy.toFixed(1) + " kWh"
+        "simulationSituation",
+        "No analysis yet"
     );
 
     setText(
-        "analyticsCost",
-        "₹" + dailyCost.toFixed(2)
+        "simulationDecision",
+        "Change the sensors and ask the AI agent to analyze the environment."
     );
 
     setText(
-        "monthlyCost",
-        "₹" + monthlyCost.toFixed(2)
+        "simulationReasoning",
+        "Gemini's reasoning will appear here."
     );
 
-
-    /*
-    Energy saved
-
-    Baseline assumes 25% higher usage.
-    */
-
-    const baseline =
-        dailyEnergy * 1.25;
-
-    const saved =
-        baseline - dailyEnergy;
-
-    const savedPercentage =
-        (saved / baseline) * 100;
-
-
     setText(
-        "energySaved",
-        savedPercentage.toFixed(1) + "%"
+        "simulationConfidence",
+        "--%"
     );
 
 }
 
 
-/*
-----------------------------------------------------
-APPLIANCE STATE
-----------------------------------------------------
-*/
+/* ==========================================
+   DASHBOARD DATA
+========================================== */
 
-function updateAppliance(
-    cardId,
-    statusId,
-    state
-) {
+function loadDashboardData() {
 
-    const card =
-        document.getElementById(cardId);
+    const temperature =
+        localStorage.getItem(
+            "temperature"
+        );
+
+
+    const motion =
+        localStorage.getItem(
+            "motion"
+        );
+
+
+    const light =
+        localStorage.getItem(
+            "lightLevel"
+        );
+
+
+    const energy =
+        localStorage.getItem(
+            "energyUsage"
+        );
+
+
+    if (temperature) {
+
+        setText(
+            "dashboardTemperature",
+            temperature
+        );
+
+    }
+
+
+    if (light) {
+
+        setText(
+            "dashboardLight",
+            light
+        );
+
+    }
+
+
+    if (energy) {
+
+        setText(
+            "dashboardEnergy",
+            energy
+        );
+
+    }
+
+
+    if (motion !== null) {
+
+        setText(
+            "dashboardMotion",
+            motion === "true"
+                ? "Detected"
+                : "No Person"
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+   RUN AI FROM SIMULATION
+========================================== */
+
+async function runSimulationAI() {
 
     const status =
-        document.getElementById(statusId);
-
-
-    if (!card || !status) {
-        return;
-    }
-
-
-    if (state) {
-
-        status.textContent =
-            "ON";
-
-        status.className =
-            "state-on";
-
-        card.classList.add(
-            "appliance-active"
-        );
-
-    }
-
-    else {
-
-        status.textContent =
-            "OFF";
-
-        status.className =
-            "state-off";
-
-        card.classList.remove(
-            "appliance-active"
-        );
-
-    }
-
-}
-
-
-/*
-----------------------------------------------------
-ACTIVITY LOG
-----------------------------------------------------
-*/
-
-function addLog(message) {
-
-    const log =
         document.getElementById(
-            "activityLog"
+            "simulationAIStatus"
         );
 
 
-    if (!log) {
-        return;
+    if (status) {
+
+        status.textContent =
+            "🤖 Gemini is thinking...";
+
     }
 
 
-    const item =
-        document.createElement("div");
+    setText(
+        "simulationSituation",
+        "Analyzing your smart home..."
+    );
 
 
-    item.className =
-        "log-item";
+    try {
+
+        const decision =
+            await getAIDecision(
+                simulationState
+            );
 
 
-    item.innerHTML = `
-
-        <span>Now</span>
-
-        <p>
-            AI decision: ${message}
-        </p>
-
-    `;
-
-
-    log.prepend(item);
-
-
-    /*
-    Keep only the latest 6 logs
-    */
-
-    while (
-        log.children.length > 6
-    ) {
-
-        log.removeChild(
-            log.lastChild
+        displaySimulationResult(
+            decision
         );
+
+
+        saveSimulationData();
+
+
+    } catch (error) {
+
+        console.error(
+            "AI ERROR:",
+            error
+        );
+
+
+        setText(
+            "simulationSituation",
+            "AI connection failed"
+        );
+
+
+        setText(
+            "simulationDecision",
+            "Make sure your backend server is running."
+        );
+
+
+        setText(
+            "simulationReasoning",
+            error.message
+        );
+
+
+        if (status) {
+
+            status.textContent =
+                "● AI OFFLINE";
+
+        }
 
     }
 
 }
 
 
-/*
-----------------------------------------------------
-HELPER
-----------------------------------------------------
-*/
+/* ==========================================
+   RUN AI FROM DASHBOARD
+========================================== */
+
+async function runAIAgent() {
+
+    const button =
+        document.getElementById(
+            "runAIButton"
+        );
+
+
+    const status =
+        document.getElementById(
+            "aiStatus"
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "🤖 AI is analyzing...";
+
+
+    if (status) {
+
+        status.textContent =
+            "● THINKING";
+
+    }
+
+
+    try {
+
+        const dashboardState =
+            getDashboardSensorData();
+
+
+        const decision =
+            await getAIDecision(
+                dashboardState
+            );
+
+
+        displayDashboardResult(
+            decision
+        );
+
+
+        if (status) {
+
+            status.textContent =
+                "● AI ACTIVE";
+
+        }
+
+    } catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        setText(
+            "aiSituation",
+            "Unable to connect to the AI agent."
+        );
+
+
+        setText(
+            "aiDecision",
+            "Please make sure the backend server is running."
+        );
+
+
+        if (status) {
+
+            status.textContent =
+                "● OFFLINE";
+
+        }
+
+    }
+
+
+    button.disabled = false;
+
+    button.textContent =
+        "🤖 Ask AI Agent";
+
+}
+
+
+/* ==========================================
+   GET AI DECISION
+========================================== */
+
+async function getAIDecision(
+    sensorData
+) {
+
+    const now =
+        new Date();
+
+
+    const time =
+        now.toLocaleTimeString(
+            [],
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+
+    const response =
+        await fetch(
+            "http://localhost:3000/api/decision",
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    temperature:
+                        sensorData.temperature,
+
+                    motion:
+                        sensorData.motion,
+
+                    lightLevel:
+                        sensorData.lightLevel,
+
+                    energyUsage:
+                        sensorData.energyUsage,
+
+                    time:
+
+                        time,
+
+                    currentAppliances: {
+
+                        light: "ON",
+
+                        fan: "ON",
+
+                        ac: "OFF",
+
+                        highPowerAppliances:
+                            "ON"
+
+                    }
+
+                })
+
+            }
+        );
+
+
+    if (!response.ok) {
+
+        const error =
+            await response.json()
+                .catch(
+                    () => ({})
+                );
+
+
+        throw new Error(
+            error.details ||
+            "Backend request failed."
+        );
+
+    }
+
+
+    return await response.json();
+
+}
+
+
+/* ==========================================
+   DISPLAY SIMULATION RESULT
+========================================== */
+
+function displaySimulationResult(
+    data
+) {
+
+    setText(
+        "simulationSituation",
+        data.situation
+    );
+
+
+    setText(
+        "simulationDecision",
+        data.decision
+    );
+
+
+    setText(
+        "simulationReasoning",
+        data.reasoning
+    );
+
+
+    setText(
+        "simulationConfidence",
+        data.confidence + "%"
+    );
+
+
+    setText(
+        "simulationAIStatus",
+        "● AI ANALYSIS COMPLETE"
+    );
+
+}
+
+
+/* ==========================================
+   DISPLAY DASHBOARD RESULT
+========================================== */
+
+function displayDashboardResult(
+    data
+) {
+
+    setText(
+        "aiSituation",
+        data.situation
+    );
+
+
+    setText(
+        "aiDecision",
+        data.decision
+    );
+
+
+    setText(
+        "aiReasoning",
+        data.reasoning
+    );
+
+
+    setText(
+        "energyAdvice",
+        data.energyAdvice
+    );
+
+
+    setText(
+        "aiLight",
+        data.actions.light
+    );
+
+
+    setText(
+        "aiFan",
+        data.actions.fan
+    );
+
+
+    setText(
+        "aiAC",
+        data.actions.ac
+    );
+
+
+    setText(
+        "aiPower",
+        data.actions.highPowerAppliances
+    );
+
+
+    const confidence =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                Number(data.confidence)
+            )
+        );
+
+
+    setText(
+        "confidenceText",
+        confidence + "%"
+    );
+
+
+    const bar =
+        document.getElementById(
+            "confidenceBar"
+        );
+
+
+    if (bar) {
+
+        bar.style.width =
+            confidence + "%";
+
+    }
+
+
+    /* Update appliance status */
+
+    setText(
+        "lightStatus",
+        data.actions.light
+    );
+
+
+    setText(
+        "fanStatus",
+        data.actions.fan
+    );
+
+
+    setText(
+        "acStatus",
+        data.actions.ac
+    );
+
+
+    setText(
+        "powerStatus",
+        data.actions.highPowerAppliances
+    );
+
+}
+
+
+/* ==========================================
+   DASHBOARD SENSOR DATA
+========================================== */
+
+function getDashboardSensorData() {
+
+    const temperature =
+        parseFloat(
+            document.getElementById(
+                "dashboardTemperature"
+            )?.textContent || "30"
+        );
+
+
+    const lightLevel =
+        parseFloat(
+            document.getElementById(
+                "dashboardLight"
+            )?.textContent || "30"
+        );
+
+
+    const energyUsage =
+        parseFloat(
+            document.getElementById(
+                "dashboardEnergy"
+            )?.textContent || "3.2"
+        );
+
+
+    const motionText =
+        document.getElementById(
+            "dashboardMotion"
+        )?.textContent || "Detected";
+
+
+    const motion =
+        motionText
+            .toLowerCase()
+            .includes(
+                "detected"
+            );
+
+
+    return {
+
+        temperature,
+
+        motion,
+
+        lightLevel,
+
+        energyUsage
+
+    };
+
+}
+
+
+/* ==========================================
+   SAVE SIMULATION DATA
+========================================== */
+
+function saveSimulationData() {
+
+    localStorage.setItem(
+        "temperature",
+        simulationState.temperature
+    );
+
+
+    localStorage.setItem(
+        "motion",
+        simulationState.motion
+    );
+
+
+    localStorage.setItem(
+        "lightLevel",
+        simulationState.lightLevel
+    );
+
+
+    localStorage.setItem(
+        "energyUsage",
+        simulationState.energyUsage
+    );
+
+}
+
+
+/* ==========================================
+   HELPER
+========================================== */
 
 function setText(
     id,
@@ -663,19 +921,3 @@ function setText(
     }
 
 }
-
-
-/*
-----------------------------------------------------
-START AGENT
-----------------------------------------------------
-*/
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        updateAgent();
-
-    }
-);

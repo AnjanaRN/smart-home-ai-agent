@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Smart Home AI | Simulation</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🏠 SmartHome<span>AI</span>
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a
+                href="simulation.html"
+                class="active"
+            >
+                Simulation
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <main class="page-container">
+
+
+        <!-- HEADER -->
+
+        <section class="page-heading">
+
+            <div>
+
+                <span class="eyebrow">
+                    AI AGENT SIMULATOR
+                </span>
+
+                <h1>
+                    Test Your
+                    <span>Smart Home</span>
+                </h1>
+
+                <p>
+                    Change the sensor conditions and ask
+                    the AI agent what your home should do.
+                </p>
+
+            </div>
+
+
+            <div class="live-status">
+
+                <span class="status-dot"></span>
+
+                Simulation Ready
+
+            </div>
+
+        </section>
+
+
+        <!-- SIMULATION -->
+
+        <section class="simulation-layout">
+
+
+            <!-- SENSOR CONTROLS -->
+
+            <div class="simulation-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            SENSOR INPUT
+                        </span>
+
+                        <h2>
+                            Change Environment
+                        </h2>
+
+                    </div>
+
+                    <span class="sensor-live">
+                        LIVE
+                    </span>
+
+                </div>
+
+
+                <!-- TEMPERATURE -->
+
+                <div class="control-group">
+
+                    <div class="control-heading">
+
+                        <label for="temperature">
+                            🌡️ Temperature
+                        </label>
+
+                        <strong>
+                            <span id="temperatureValue">
+                                30
+                            </span>°C
+                        </strong>
+
+                    </div>
+
+
+                    <input
+                        type="range"
+                        id="temperature"
+                        min="10"
+                        max="45"
+                        value="30"
+                        oninput="updateSimulation()"
+                    >
+
+                    <div class="range-labels">
+
+                        <span>10°C</span>
+                        <span>45°C</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LIGHT -->
+
+                <div class="control-group">
+
+                    <div class="control-heading">
+
+                        <label for="lightLevel">
+                            💡 Light Level
+                        </label>
+
+                        <strong>
+                            <span id="lightValue">
+                                30
+                            </span>%
+                        </strong>
+
+                    </div>
+
+
+                    <input
+                        type="range"
+                        id="lightLevel"
+                        min="0"
+                        max="100"
+                        value="30"
+                        oninput="updateSimulation()"
+                    >
+
+                    <div class="range-labels">
+
+                        <span>Dark</span>
+                        <span>Bright</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ENERGY -->
+
+                <div class="control-group">
+
+                    <div class="control-heading">
+
+                        <label for="energyUsage">
+                            ⚡ Energy Usage
+                        </label>
+
+                        <strong>
+                            <span id="energyValue">
+                                3.2
+                            </span> kW
+                        </strong>
+
+                    </div>
+
+
+                    <input
+                        type="range"
+                        id="energyUsage"
+                        min="0.5"
+                        max="10"
+                        step="0.1"
+                        value="3.2"
+                        oninput="updateSimulation()"
+                    >
+
+                    <div class="range-labels">
+
+                        <span>0.5 kW</span>
+                        <span>10 kW</span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MOTION -->
+
+                <div class="motion-control">
+
+                    <div>
+
+                        <strong>
+                            🚶 Motion Sensor
+                        </strong>
+
+                        <p>
+                            Is someone currently inside
+                            the room?
+                        </p>
+
+                    </div>
+
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="motion"
+                            checked
+                            onchange="updateSimulation()"
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- TIME -->
+
+                <div class="time-display">
+
+                    <span>
+                        🕐 Current Time
+                    </span>
+
+                    <strong id="currentTime">
+                        --
+                    </strong>
+
+                </div>
+
+
+                <!-- ASK AI -->
+
+                <button
+                    class="primary-button"
+                    onclick="runSimulationAI()"
+                >
+                    🤖 Ask AI to Analyze
+                </button>
+
+
+                <button
+                    class="secondary-button"
+                    onclick="resetSimulation()"
+                >
+                    ↻ Reset Simulation
+                </button>
+
+            </div>
+
+
+            <!-- LIVE PREVIEW -->
+
+            <div class="simulation-card preview-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="eyebrow">
+                            LIVE ENVIRONMENT
+                        </span>
+
+                        <h2>
+                            Home Preview
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="room-preview">
+
+
+                    <div class="room-ceiling-light">
+
+                        <div
+                            id="previewLight"
+                            class="ceiling-light"
+                        >
+                        </div>
+
+                    </div>
+
+
+                    <div class="room-content">
+
+                        <div
+                            id="previewPerson"
+                            class="person"
+                        >
+                            🧍
+                        </div>
+
+
+                        <div class="room-appliances">
+
+                            <div
+                                id="previewFan"
+                                class="room-device"
+                            >
+                                🌀
+                            </div>
+
+                            <div
+                                id="previewAC"
+                                class="room-device"
+                            >
+                                ❄️
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="room-floor">
+
+                        <span>
+                            SMART HOME
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ENVIRONMENT SUMMARY -->
+
+                <div class="environment-summary">
+
+                    <div>
+
+                        <span>
+                            Temperature
+                        </span>
+
+                        <strong id="previewTemperature">
+                            30°C
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Occupancy
+                        </span>
+
+                        <strong id="previewMotion">
+                            Occupied
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Lighting
+                        </span>
+
+                        <strong id="previewLightText">
+                            30%
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Energy
+                        </span>
+
+                        <strong id="previewEnergy">
+                            3.2 kW
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- AI RESULT -->
+
+        <section class="simulation-result">
+
+            <div class="result-header">
+
+                <span class="ai-badge">
+                    🤖 AI ANALYSIS
+                </span>
+
+                <span id="simulationAIStatus">
+                    Waiting for input
+                </span>
+
+            </div>
+
+
+            <div class="result-main">
+
+                <div>
+
+                    <span class="eyebrow">
+                        AI SITUATION
+                    </span>
+
+                    <h2 id="simulationSituation">
+                        No analysis yet
+                    </h2>
+
+                </div>
+
+
+                <div class="confidence-display">
+
+                    <span>
+                        Confidence
+                    </span>
+
+                    <strong id="simulationConfidence">
+                        --%
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="result-decision">
+
+                <span class="eyebrow">
+                    RECOMMENDED ACTION
+                </span>
+
+                <p id="simulationDecision">
+                    Change the sensors and ask the AI
+                    agent to analyze the environment.
+                </p>
+
+            </div>
+
+
+            <div class="result-reasoning">
+
+                <h3>
+                    🧠 AI Reasoning
+                </h3>
+
+                <p id="simulationReasoning">
+                    Gemini's reasoning will appear here.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <footer>
+
+        <p>
+            SmartHomeAI • AI-Based Smart Home Energy Management
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+    <script src="simulation-ai.js"></script>
+
+</body>
+
+</html>
