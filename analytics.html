@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | SmartHome AI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <a href="index.html" class="brand">
+
+        <div class="brand-icon">⌂</div>
+
+        <div>
+            <strong>SmartHome AI</strong>
+            <span>Energy Management Agent</span>
+        </div>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="analytics.html" class="active">
+            Analytics
+        </a>
+
+    </div>
+
+
+    <div class="online-status">
+        <span></span> AI Online
+    </div>
+
+</nav>
+
+
+<main class="dashboard-page">
+
+    <!-- HEADER -->
+
+    <section class="page-header">
+
+        <div>
+
+            <div class="hero-label">
+                ENERGY INTELLIGENCE
+            </div>
+
+            <h1>
+                Energy Analytics
+            </h1>
+
+            <p>
+                Understand consumption, estimated costs and
+                the impact of AI-based appliance management.
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- ANALYTICS SUMMARY -->
+
+    <section class="summary-grid">
+
+        <div class="summary-card">
+
+            <div class="summary-top">
+                <span>⚡</span>
+                <small>Today's Usage</small>
+            </div>
+
+            <strong id="analyticsUsage">
+                17.3 kWh
+            </strong>
+
+            <p>
+                Estimated consumption
+            </p>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-top">
+                <span>₹</span>
+                <small>Today's Cost</small>
+            </div>
+
+            <strong id="analyticsCost">
+                ₹40.32
+            </strong>
+
+            <p>
+                Estimated electricity cost
+            </p>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-top">
+                <span>🌱</span>
+                <small>Energy Saved</small>
+            </div>
+
+            <strong id="energySaved">
+                18.7%
+            </strong>
+
+            <p>
+                Compared with baseline
+            </p>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <div class="summary-top">
+                <span>📉</span>
+                <small>Monthly Estimate</small>
+            </div>
+
+            <strong id="monthlyCost">
+                ₹1,209.60
+            </strong>
+
+            <p>
+                Based on current usage
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHART -->
+
+    <section class="chart-section">
+
+        <div class="block-header">
+
+            <div>
+
+                <div class="hero-label">
+                    CONSUMPTION TREND
+                </div>
+
+                <h2>
+                    Today's Energy Usage
+                </h2>
+
+            </div>
+
+            <div class="chart-average">
+                Average <strong>2.4 kW</strong>
+            </div>
+
+        </div>
+
+
+        <div class="chart-container">
+
+            <canvas id="energyChart"></canvas>
+
+        </div>
+
+    </section>
+
+
+    <!-- CALCULATIONS -->
+
+    <section class="calculation-section">
+
+        <div class="block-header">
+
+            <div>
+
+                <div class="hero-label">
+                    CALCULATION ENGINE
+                </div>
+
+                <h2>
+                    How the numbers are calculated
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="calculation-grid">
+
+
+            <div class="calculation-card">
+
+                <div class="calculation-icon">
+                    ⚡
+                </div>
+
+                <h3>
+                    Energy Consumption
+                </h3>
+
+                <div class="formula">
+                    Power × Time
+                </div>
+
+                <p>
+                    If appliances consume 2.4 kW for
+                    7.2 hours:
+                </p>
+
+                <strong>
+                    2.4 × 7.2 = 17.28 kWh
+                </strong>
+
+            </div>
+
+
+            <div class="calculation-card">
+
+                <div class="calculation-icon">
+                    ₹
+                </div>
+
+                <h3>
+                    Electricity Cost
+                </h3>
+
+                <div class="formula">
+                    Energy × Tariff
+                </div>
+
+                <p>
+                    Using an assumed tariff of
+                    ₹2.33 per kWh:
+                </p>
+
+                <strong>
+                    17.28 × ₹2.33 = ₹40.26
+                </strong>
+
+            </div>
+
+
+            <div class="calculation-card">
+
+                <div class="calculation-icon">
+                    📉
+                </div>
+
+                <h3>
+                    Energy Saved
+                </h3>
+
+                <div class="formula">
+                    Baseline − Actual
+                </div>
+
+                <p>
+                    Baseline consumption:
+                    21.28 kWh
+                </p>
+
+                <strong>
+                    Saved = 4.00 kWh
+                </strong>
+
+            </div>
+
+
+            <div class="calculation-card">
+
+                <div class="calculation-icon">
+                    📊
+                </div>
+
+                <h3>
+                    Saving Percentage
+                </h3>
+
+                <div class="formula">
+                    Saved ÷ Baseline × 100
+                </div>
+
+                <p>
+                    4.00 ÷ 21.28 × 100
+                </p>
+
+                <strong>
+                    ≈ 18.8%
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- APPLIANCE CONSUMPTION -->
+
+    <section class="appliance-analysis">
+
+        <div class="block-header">
+
+            <div>
+
+                <div class="hero-label">
+                    APPLIANCE BREAKDOWN
+                </div>
+
+                <h2>
+                    Power Consumption
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="consumption-table">
+
+            <div class="table-row table-head">
+
+                <span>Appliance</span>
+                <span>Power</span>
+                <span>6 hr usage</span>
+                <span>Estimated cost</span>
+
+            </div>
+
+
+            <div class="table-row">
+
+                <span>
+                    💡 Smart Light
+                </span>
+
+                <span>
+                    0.06 kW
+                </span>
+
+                <span>
+                    0.36 kWh
+                </span>
+
+                <strong>
+                    ₹0.84
+                </strong>
+
+            </div>
+
+
+            <div class="table-row">
+
+                <span>
+                    🌀 Smart Fan
+                </span>
+
+                <span>
+                    0.08 kW
+                </span>
+
+                <span>
+                    0.48 kWh
+                </span>
+
+                <strong>
+                    ₹1.12
+                </strong>
+
+            </div>
+
+
+            <div class="table-row">
+
+                <span>
+                    ❄️ Smart AC
+                </span>
+
+                <span>
+                    1.50 kW
+                </span>
+
+                <span>
+                    9.00 kWh
+                </span>
+
+                <strong>
+                    ₹20.97
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CTA -->
+
+    <section class="analytics-cta">
+
+        <div>
+
+            <div class="hero-label">
+                AI CONTROL
+            </div>
+
+            <h2>
+                Want to see how the AI makes decisions?
+            </h2>
+
+            <p>
+                Change the sensor values and watch appliance
+                states update automatically.
+            </p>
+
+        </div>
+
+
+        <a href="dashboard.html" class="primary-btn">
+            Open Dashboard →
+        </a>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <div>
+        <strong>SmartHome AI</strong>
+        <p>AI-Based Smart Home Energy Management Agent</p>
+    </div>
+
+    <div>
+        Academic Project • Simulation Mode
+    </div>
+
+</footer>
+
+
+<script>
+
+const ctx =
+    document.getElementById("energyChart");
+
+new Chart(ctx, {
+
+    type: "line",
+
+    data: {
+
+        labels: [
+            "6 AM",
+            "8 AM",
+            "10 AM",
+            "12 PM",
+            "2 PM",
+            "4 PM",
+            "6 PM",
+            "8 PM",
+            "10 PM"
+        ],
+
+        datasets: [
+
+            {
+                label: "Energy Usage (kW)",
+
+                data: [
+                    1.1,
+                    1.6,
+                    2.1,
+                    2.8,
+                    2.4,
+                    2.1,
+                    3.2,
+                    3.8,
+                    2.4
+                ],
+
+                borderWidth: 3,
+
+                tension: 0.4,
+
+                fill: true
+            }
+
+        ]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+        plugins: {
+
+            legend: {
+                display: false
+            }
+
+        },
+
+        scales: {
+
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "kW"
+                }
+            },
+
+            x: {
+                grid: {
+                    display: false
+                }
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+
+</body>
+</html>

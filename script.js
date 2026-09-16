@@ -1,98 +1,222 @@
+/*
+====================================================
+SMART HOME AI AGENT
+====================================================
+
+The agent follows:
+
+OBSERVE → DECIDE → ACT
+
+Inputs:
+- Temperature
+- Occupancy
+- Light intensity
+- Energy consumption
+
+Outputs:
+- Light
+- Fan
+- AC
+- Energy alert
+
+====================================================
+*/
+
+
 let lastDecision = "";
+
+
+/*
+----------------------------------------------------
+MAIN AI FUNCTION
+----------------------------------------------------
+*/
 
 function updateAgent() {
 
-    // Read sensor values
-    const temperature = Number(
-        document.getElementById("temperature").value
-    );
+    const temperatureElement =
+        document.getElementById("temperature");
+
+    const occupancyElement =
+        document.getElementById("occupancy");
+
+    const lightElement =
+        document.getElementById("light");
+
+    const energyElement =
+        document.getElementById("energy");
+
+
+    // If this page does not contain the controls,
+    // stop the function.
+
+    if (
+        !temperatureElement ||
+        !occupancyElement ||
+        !lightElement ||
+        !energyElement
+    ) {
+        return;
+    }
+
+
+    /*
+    ============================
+    OBSERVE
+    ============================
+    */
+
+    const temperature =
+        Number(temperatureElement.value);
 
     const occupancy =
-        document.getElementById("occupancy").value;
+        occupancyElement.value;
 
-    const light = Number(
-        document.getElementById("light").value
+    const light =
+        Number(lightElement.value);
+
+    const energy =
+        Number(energyElement.value);
+
+
+    /*
+    ============================
+    UPDATE SENSOR DISPLAY
+    ============================
+    */
+
+    setText(
+        "temperatureDisplay",
+        temperature + "°C"
     );
 
-    const energy = Number(
-        document.getElementById("energy").value
+    setText(
+        "occupancyDisplay",
+        occupancy === "present"
+            ? "Detected"
+            : "Empty"
+    );
+
+    setText(
+        "lightDisplay",
+        light + "%"
+    );
+
+    setText(
+        "energySensorDisplay",
+        energy.toFixed(1) + " kW"
     );
 
 
-    // Update sensor display
-    document.getElementById("temperatureValue").textContent =
-        temperature + "°C";
+    /*
+    ============================
+    UPDATE SUMMARY
+    ============================
+    */
 
-    document.getElementById("lightValue").textContent =
-        light + "%";
+    setText(
+        "summaryTemperature",
+        temperature + "°C"
+    );
 
-    document.getElementById("energyValue").textContent =
-        energy.toFixed(1) + " kW";
+    setText(
+        "summaryEnergy",
+        energy.toFixed(1) + " kW"
+    );
 
-    document.getElementById("occupancyValue").textContent =
-        occupancy === "present" ? "Detected" : "Empty";
 
+    /*
+    ============================
+    AI DECISION
+    ============================
+    */
 
-    // Appliance states
     let lightState = false;
+
     let fanState = false;
+
     let acState = false;
 
     let decision = "";
+
     let reason = "";
 
 
     /*
-        AI AGENT DECISION LOGIC
-
-        The agent observes:
-        - temperature
-        - occupancy
-        - light intensity
-        - energy consumption
-
-        It then decides what action should be taken.
+    CASE 1:
+    Nobody is present
     */
 
-
-    // Nobody is home
     if (occupancy === "absent") {
 
         lightState = false;
+
         fanState = false;
+
         acState = false;
 
-        decision = "Switching appliances OFF";
+        decision =
+            "Switching appliances OFF";
+
         reason =
-            "No person is detected in the room, so the AI is reducing unnecessary energy consumption.";
+            "No person is detected in the room, so the agent is reducing unnecessary energy consumption.";
 
     }
 
 
-    // Someone is present
+    /*
+    CASE 2:
+    Person is present
+    */
+
     else {
 
-        // Lighting decision
+        /*
+        Lighting
+        */
+
         if (light < 45) {
+
             lightState = true;
+
         }
 
-        // Fan decision
+
+        /*
+        Fan
+        */
+
         if (temperature >= 27) {
+
             fanState = true;
+
         }
 
-        // AC decision
+
+        /*
+        AC
+        */
+
         if (temperature >= 30) {
+
             acState = true;
+
             fanState = true;
+
         }
 
 
-        // Generate explanation
-        if (temperature >= 30 && light < 45) {
+        /*
+        AI explanation
+        */
 
-            decision = "Turn ON AC + Light";
+        if (
+            temperature >= 30 &&
+            light < 45
+        ) {
+
+            decision =
+                "Turn ON AC + Light";
 
             reason =
                 "A person is present, the temperature is high and the room has low light.";
@@ -101,7 +225,8 @@ function updateAgent() {
 
         else if (temperature >= 30) {
 
-            decision = "Turn ON AC";
+            decision =
+                "Turn ON AC";
 
             reason =
                 "High temperature detected while a person is present.";
@@ -110,16 +235,18 @@ function updateAgent() {
 
         else if (temperature >= 27) {
 
-            decision = "Turn ON Fan";
+            decision =
+                "Turn ON Fan";
 
             reason =
-                "The temperature is moderately high, so the AI activates cooling.";
+                "Temperature is moderately high, so the AI activates cooling.";
 
         }
 
         else if (light < 45) {
 
-            decision = "Turn ON Light";
+            decision =
+                "Turn ON Light";
 
             reason =
                 "A person is present and the room has insufficient light.";
@@ -128,20 +255,25 @@ function updateAgent() {
 
         else {
 
-            decision = "Maintain Current State";
+            decision =
+                "Maintain Current State";
 
             reason =
-                "Environmental conditions are comfortable and no unnecessary action is required.";
+                "The environment is comfortable and no additional action is required.";
 
         }
 
     }
 
 
-    // Energy warning
+    /*
+    HIGH ENERGY CONDITION
+    */
+
     if (energy >= 7) {
 
-        decision = "Reduce Energy Consumption";
+        decision =
+            "Reduce Energy Consumption";
 
         reason =
             "Energy usage is unusually high. The AI recommends reducing unnecessary appliance usage.";
@@ -149,15 +281,29 @@ function updateAgent() {
     }
 
 
-    // Update decision panel
-    document.getElementById("decision").textContent =
-        decision;
+    /*
+    ============================
+    DECISION DISPLAY
+    ============================
+    */
 
-    document.getElementById("reason").textContent =
-        reason;
+    setText(
+        "decision",
+        decision
+    );
+
+    setText(
+        "reason",
+        reason
+    );
 
 
-    // Update appliances
+    /*
+    ============================
+    ACT
+    ============================
+    */
+
     updateAppliance(
         "lightCard",
         "lightStatus",
@@ -177,49 +323,27 @@ function updateAgent() {
     );
 
 
-    // Energy display
-    document.getElementById("energyDisplay").textContent =
-        energy.toFixed(1);
+    /*
+    ============================
+    ENERGY CALCULATIONS
+    ============================
+    */
 
-    document.getElementById("energyBar").style.width =
-        Math.min(energy * 10, 100) + "%";
-
-
-    // Energy status
-    const energyStatus =
-        document.getElementById("energyStatus");
-
-    if (energy >= 7) {
-
-        energyStatus.textContent = "High";
-        energyStatus.style.color = "#d9534f";
-
-    }
-
-    else if (energy >= 4) {
-
-        energyStatus.textContent = "Moderate";
-        energyStatus.style.color = "#d99a38";
-
-    }
-
-    else {
-
-        energyStatus.textContent = "Normal";
-        energyStatus.style.color = "#237a4b";
-
-    }
+    calculateEnergy(
+        energy,
+        temperature
+    );
 
 
-    // Daily usage estimate
-    const dailyUsage = energy * 7.2;
+    /*
+    ============================
+    ACTIVITY LOG
+    ============================
+    */
 
-    document.getElementById("dailyUsage").textContent =
-        dailyUsage.toFixed(1) + " kWh";
-
-
-    // Activity log
-    if (decision !== lastDecision) {
+    if (
+        decision !== lastDecision
+    ) {
 
         addLog(decision);
 
@@ -231,34 +355,227 @@ function updateAgent() {
 
 
 /*
-    Changes the appearance and status
-    of each appliance.
+----------------------------------------------------
+ENERGY CALCULATIONS
+----------------------------------------------------
 */
 
-function updateAppliance(cardId, statusId, state) {
+function calculateEnergy(
+    energy,
+    temperature
+) {
 
-    const card = document.getElementById(cardId);
-    const status = document.getElementById(statusId);
+    /*
+    We assume the current energy
+    consumption continues for 7.2 hours.
+
+    Energy = Power × Time
+    */
+
+    const dailyHours = 7.2;
+
+    const dailyEnergy =
+        energy * dailyHours;
+
+
+    /*
+    Assumed electricity tariff
+    */
+
+    const tariff = 2.33;
+
+
+    /*
+    Cost = Energy × Tariff
+    */
+
+    const dailyCost =
+        dailyEnergy * tariff;
+
+
+    /*
+    Monthly estimate
+    */
+
+    const monthlyCost =
+        dailyCost * 30;
+
+
+    /*
+    AI efficiency
+
+    Higher temperature and unnecessary
+    usage reduce efficiency.
+    */
+
+    let efficiency = 90;
+
+    if (temperature >= 30) {
+
+        efficiency -= 8;
+
+    }
+
+    if (energy >= 5) {
+
+        efficiency -= 7;
+
+    }
+
+    if (energy >= 7) {
+
+        efficiency -= 10;
+
+    }
+
+    efficiency =
+        Math.max(50, efficiency);
+
+
+    /*
+    Update page
+    */
+
+    setText(
+        "summaryCost",
+        "₹" + dailyCost.toFixed(2)
+    );
+
+    setText(
+        "efficiency",
+        efficiency + "%"
+    );
+
+
+    /*
+    Energy status
+    */
+
+    const statusElement =
+        document.getElementById(
+            "summaryEnergyStatus"
+        );
+
+
+    if (statusElement) {
+
+        if (energy >= 7) {
+
+            statusElement.textContent =
+                "High consumption";
+
+        }
+
+        else if (energy >= 4) {
+
+            statusElement.textContent =
+                "Moderate consumption";
+
+        }
+
+        else {
+
+            statusElement.textContent =
+                "Normal consumption";
+
+        }
+
+    }
+
+
+    /*
+    Analytics page values
+    */
+
+    setText(
+        "analyticsUsage",
+        dailyEnergy.toFixed(1) + " kWh"
+    );
+
+    setText(
+        "analyticsCost",
+        "₹" + dailyCost.toFixed(2)
+    );
+
+    setText(
+        "monthlyCost",
+        "₹" + monthlyCost.toFixed(2)
+    );
+
+
+    /*
+    Energy saved
+
+    Baseline assumes 25% higher usage.
+    */
+
+    const baseline =
+        dailyEnergy * 1.25;
+
+    const saved =
+        baseline - dailyEnergy;
+
+    const savedPercentage =
+        (saved / baseline) * 100;
+
+
+    setText(
+        "energySaved",
+        savedPercentage.toFixed(1) + "%"
+    );
+
+}
+
+
+/*
+----------------------------------------------------
+APPLIANCE STATE
+----------------------------------------------------
+*/
+
+function updateAppliance(
+    cardId,
+    statusId,
+    state
+) {
+
+    const card =
+        document.getElementById(cardId);
+
+    const status =
+        document.getElementById(statusId);
+
+
+    if (!card || !status) {
+        return;
+    }
+
 
     if (state) {
 
-        status.textContent = "ON";
+        status.textContent =
+            "ON";
 
-        status.style.background = "#e3f2e8";
-        status.style.color = "#237a4b";
+        status.className =
+            "state-on";
 
-        card.style.borderColor = "#b7d8c2";
+        card.classList.add(
+            "appliance-active"
+        );
 
     }
 
     else {
 
-        status.textContent = "OFF";
+        status.textContent =
+            "OFF";
 
-        status.style.background = "#f0f2f0";
-        status.style.color = "#78817b";
+        status.className =
+            "state-off";
 
-        card.style.borderColor = "#e3e8e4";
+        card.classList.remove(
+            "appliance-active"
+        );
 
     }
 
@@ -266,43 +583,99 @@ function updateAppliance(cardId, statusId, state) {
 
 
 /*
-    Adds a new entry to the AI activity log.
+----------------------------------------------------
+ACTIVITY LOG
+----------------------------------------------------
 */
 
 function addLog(message) {
 
     const log =
-        document.getElementById("activityLog");
+        document.getElementById(
+            "activityLog"
+        );
+
+
+    if (!log) {
+        return;
+    }
+
 
     const item =
         document.createElement("div");
 
-    item.className = "log-item";
+
+    item.className =
+        "log-item";
+
 
     item.innerHTML = `
-        <span class="log-time">Now</span>
-        <span>AI decision: ${message}</span>
+
+        <span>Now</span>
+
+        <p>
+            AI decision: ${message}
+        </p>
+
     `;
 
+
     log.prepend(item);
+
+
+    /*
+    Keep only the latest 6 logs
+    */
+
+    while (
+        log.children.length > 6
+    ) {
+
+        log.removeChild(
+            log.lastChild
+        );
+
+    }
 
 }
 
 
 /*
-    Scroll to dashboard.
+----------------------------------------------------
+HELPER
+----------------------------------------------------
 */
 
-function scrollToDashboard() {
+function setText(
+    id,
+    value
+) {
 
-    document
-        .getElementById("dashboard")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
+    const element =
+        document.getElementById(id);
+
+
+    if (element) {
+
+        element.textContent =
+            value;
+
+    }
 
 }
 
 
-// Run the agent when the website opens
-updateAgent();
+/*
+----------------------------------------------------
+START AGENT
+----------------------------------------------------
+*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        updateAgent();
+
+    }
+);
