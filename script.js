@@ -566,14 +566,10 @@ async function runAIAgent() {
    GET AI DECISION
 ========================================== */
 
-/* ==========================================
-   GET AI DECISION
-========================================== */
-
 async function getAIDecision(sensorData) {
 
     const response = await fetch(
-        "http://localhost:3000/api/analyze",
+        "https://smart-home-ai-agent.onrender.com/api/analyze",
         {
             method: "POST",
 
@@ -623,6 +619,7 @@ async function getAIDecision(sensorData) {
         await response.json();
 
     if (!result.success) {
+
         throw new Error(
             result.error ||
             "AI analysis failed."
@@ -630,80 +627,43 @@ async function getAIDecision(sensorData) {
     }
 
     /*
-       Backend currently returns Gemini's
-       response as one text string.
-
-       Convert that text into the format
-       used by your dashboard.
+       The online backend already returns
+       structured AI results.
     */
-
-    const text = result.analysis || "";
-
-    const situation =
-        text.match(/SITUATION:\s*(.*)/i)?.[1]
-        || "AI analyzed the current environment.";
-
-    const decision =
-        text.match(/ACTION:\s*(.*)/i)?.[1]
-        || "No specific action generated.";
-
-    const reasoning =
-        text.match(/REASON:\s*(.*)/i)?.[1]
-        || "AI reasoning generated successfully.";
-
-    const energySaving =
-        text.match(/ENERGY_SAVING:\s*(.*)/i)?.[1]
-        || "Medium";
-
-    const confidenceMatch =
-        text.match(/CONFIDENCE:\s*(\d+)/i);
-
-    const confidence =
-        confidenceMatch
-            ? Number(confidenceMatch[1])
-            : 85;
 
     return {
 
-        situation: situation,
+        situation:
+            result.situation,
 
-        decision: decision,
+        decision:
+            result.decision,
 
         reasoning:
-            reasoning +
-            " Energy saving level: " +
-            energySaving,
-
-        confidence: confidence,
+            result.reasoning,
 
         energyAdvice:
-            "AI recommends optimizing appliance usage based on the current sensor conditions.",
+            result.energyAdvice,
+
+        confidence:
+            result.confidence,
 
         actions: {
 
             light:
-                sensorData.motion &&
-                sensorData.lightLevel < 50
-                    ? "ON"
-                    : "OFF",
+                result.actions.light,
 
             fan:
-                sensorData.motion &&
-                sensorData.temperature >= 28
-                    ? "ON"
-                    : "OFF",
+                result.actions.fan,
 
             ac:
-                sensorData.motion &&
-                sensorData.temperature >= 32
-                    ? "ON"
-                    : "OFF",
+                result.actions.ac,
 
             highPowerAppliances:
-                sensorData.energyUsage >= 3
-                    ? "REDUCE"
-                    : "NORMAL"
+                result.actions.highPowerAppliances
+
         }
+
     };
 }
 
