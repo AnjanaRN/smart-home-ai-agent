@@ -4,7 +4,7 @@
 // Do NOT remove script.js.
 // ============================================================
 
-const AI_BACKEND_URL = "http://localhost:3000";
+const AI_BACKEND_URL = "https://smart-home-ai-agent.onrender.com";
 
 
 // ============================================================
