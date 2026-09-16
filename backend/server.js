@@ -5,7 +5,7 @@ const cors = require("cors");
 const { GoogleGenAI } = require("@google/genai");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -277,7 +277,7 @@ Keep everything short and suitable for a college project demonstration.
 // START SERVER
 // ==================================================
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
 
     console.log(
         `Smart Home AI backend running on http://localhost:${PORT}`
