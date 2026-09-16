@@ -14,20 +14,24 @@ const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
 });
 
-// --------------------------------------------------
+
+// ==================================================
 // HOME / HEALTH CHECK
-// --------------------------------------------------
+// ==================================================
 
 app.get("/", (req, res) => {
+
     res.json({
         status: "online",
         message: "Smart Home AI Agent backend is running."
     });
+
 });
 
-// --------------------------------------------------
+
+// ==================================================
 // AI SMART HOME ANALYSIS
-// --------------------------------------------------
+// ==================================================
 
 app.post("/api/analyze", async (req, res) => {
 
@@ -43,19 +47,28 @@ app.post("/api/analyze", async (req, res) => {
             lights
         } = req.body;
 
+
+        console.log("Received sensor data:", req.body);
+
+
+        // ----------------------------------------------
+        // AI PROMPT
+        // ----------------------------------------------
+
         const prompt = `
+
 You are an AI-based Smart Home Energy Management Agent.
 
-Your job is to analyze smart home sensor data and decide how
-the appliances should be controlled to save electricity while
-keeping people comfortable.
+Analyze the following smart home sensor information.
 
-CURRENT SENSOR DATA:
+Your goal is to save electricity while keeping occupants comfortable.
+
+SENSOR DATA:
 
 Temperature: ${temperature} °C
 Motion detected: ${motion}
-Light level: ${light}
-Energy consumption: ${energy}
+Light level: ${light}%
+Energy consumption: ${energy} kW
 
 CURRENT APPLIANCE STATUS:
 
@@ -63,58 +76,211 @@ Fan: ${fan}
 AC: ${ac}
 Lights: ${lights}
 
-Analyze the situation and provide a clear recommendation.
+Analyze:
 
-Consider:
-1. Whether someone is present.
-2. Whether the room is too hot.
-3. Whether lighting is required.
-4. Whether electricity consumption is unusually high.
-5. Which appliances should be ON or OFF.
+1. Is someone present?
+2. Is the room too hot?
+3. Is lighting required?
+4. Is energy consumption high?
+5. Which appliances should be ON or OFF?
 
-Return your answer in exactly this format:
+Return ONLY this format:
 
-SITUATION: <short description>
+SITUATION: short description
 
-ACTION: <what the AI recommends>
+ACTION: short recommendation
 
-REASON: <why the AI made this decision>
+REASON: short explanation
 
-ENERGY_SAVING: <Low / Medium / High>
+ENERGY_SAVING: Low, Medium, or High
 
-CONFIDENCE: <number between 0 and 100>
+LIGHT: ON or OFF
 
-Keep the response short and easy to understand for a
-college project demonstration.
+FAN: ON or OFF
+
+AC: ON or OFF
+
+HIGH_POWER: REDUCE or NORMAL
+
+CONFIDENCE: number between 0 and 100
+
+Keep everything short and suitable for a college project demonstration.
+
 `;
 
+
+        // ----------------------------------------------
+        // GEMINI
+        // ----------------------------------------------
+
         const response = await ai.models.generateContent({
+
             model: "gemini-3.6-flash",
+
             contents: prompt
+
         });
 
-        const text = response.text;
+
+        const text = response.text || "";
+
+
+        console.log("Gemini response:");
+        console.log(text);
+
+
+        // ----------------------------------------------
+        // PARSE AI RESPONSE
+        // ----------------------------------------------
+
+        function extract(label, fallback) {
+
+            const regex = new RegExp(
+                label + "\\s*:\\s*(.*)",
+                "i"
+            );
+
+            const match = text.match(regex);
+
+            return match
+                ? match[1].trim()
+                : fallback;
+
+        }
+
+
+        const situation = extract(
+            "SITUATION",
+            "The AI analyzed the current home environment."
+        );
+
+
+        const action = extract(
+            "ACTION",
+            "Maintain the current appliance settings."
+        );
+
+
+        const reason = extract(
+            "REASON",
+            "The decision is based on the current sensor readings."
+        );
+
+
+        const energySaving = extract(
+            "ENERGY_SAVING",
+            "Medium"
+        );
+
+
+        const lightDecision = extract(
+            "LIGHT",
+            "OFF"
+        );
+
+
+        const fanDecision = extract(
+            "FAN",
+            "OFF"
+        );
+
+
+        const acDecision = extract(
+            "AC",
+            "OFF"
+        );
+
+
+        const highPowerDecision = extract(
+            "HIGH_POWER",
+            "NORMAL"
+        );
+
+
+        let confidence = parseInt(
+            extract("CONFIDENCE", "85")
+        );
+
+
+        if (isNaN(confidence)) {
+            confidence = 85;
+        }
+
+
+        confidence = Math.max(
+            0,
+            Math.min(100, confidence)
+        );
+
+
+        // ----------------------------------------------
+        // SEND STRUCTURED RESULT
+        // ----------------------------------------------
 
         res.json({
+
             success: true,
-            analysis: text
+
+            situation: situation,
+
+            decision: action,
+
+            reasoning: reason,
+
+            energyAdvice:
+                `Energy saving level: ${energySaving}.`,
+
+            confidence: confidence,
+
+            actions: {
+
+                light: lightDecision,
+
+                fan: fanDecision,
+
+                ac: acDecision,
+
+                highPowerAppliances:
+                    highPowerDecision
+
+            },
+
+            rawAnalysis: text
+
         });
+
 
     } catch (error) {
 
-        console.error("AI ERROR:", error);
+        console.error(
+            "AI ERROR:",
+            error
+        );
+
 
         res.status(500).json({
+
             success: false,
-            error: error.message || "AI request failed"
+
+            error:
+                error.message ||
+                "AI request failed"
+
         });
+
     }
+
 });
 
-// --------------------------------------------------
+
+// ==================================================
 // START SERVER
-// --------------------------------------------------
+// ==================================================
 
 app.listen(PORT, () => {
-    console.log(`Smart Home AI backend running on http://localhost:${PORT}`);
+
+    console.log(
+        `Smart Home AI backend running on http://localhost:${PORT}`
+    );
+
 });

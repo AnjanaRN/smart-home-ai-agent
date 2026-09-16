@@ -566,92 +566,145 @@ async function runAIAgent() {
    GET AI DECISION
 ========================================== */
 
-async function getAIDecision(
-    sensorData
-) {
+/* ==========================================
+   GET AI DECISION
+========================================== */
 
-    const now =
-        new Date();
+async function getAIDecision(sensorData) {
 
+    const response = await fetch(
+        "http://localhost:3000/api/analyze",
+        {
+            method: "POST",
 
-    const time =
-        now.toLocaleTimeString(
-            [],
-            {
-                hour: "2-digit",
-                minute: "2-digit"
-            }
-        );
+            headers: {
+                "Content-Type": "application/json"
+            },
 
+            body: JSON.stringify({
 
-    const response =
-        await fetch(
-            "http://localhost:3000/api/decision",
-            {
+                temperature:
+                    sensorData.temperature,
 
-                method: "POST",
+                motion:
+                    sensorData.motion
+                        ? "Detected"
+                        : "Not Detected",
 
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
+                light:
+                    sensorData.lightLevel + "%",
 
-                body: JSON.stringify({
+                energy:
+                    sensorData.energyUsage + " kW",
 
-                    temperature:
-                        sensorData.temperature,
+                fan: "ON",
 
-                    motion:
-                        sensorData.motion,
+                ac: "OFF",
 
-                    lightLevel:
-                        sensorData.lightLevel,
+                lights: "ON"
 
-                    energyUsage:
-                        sensorData.energyUsage,
-
-                    time:
-
-                        time,
-
-                    currentAppliances: {
-
-                        light: "ON",
-
-                        fan: "ON",
-
-                        ac: "OFF",
-
-                        highPowerAppliances:
-                            "ON"
-
-                    }
-
-                })
-
-            }
-        );
-
+            })
+        }
+    );
 
     if (!response.ok) {
 
         const error =
             await response.json()
-                .catch(
-                    () => ({})
-                );
-
+                .catch(() => ({}));
 
         throw new Error(
-            error.details ||
+            error.error ||
             "Backend request failed."
         );
-
     }
 
+    const result =
+        await response.json();
 
-    return await response.json();
+    if (!result.success) {
+        throw new Error(
+            result.error ||
+            "AI analysis failed."
+        );
+    }
 
+    /*
+       Backend currently returns Gemini's
+       response as one text string.
+
+       Convert that text into the format
+       used by your dashboard.
+    */
+
+    const text = result.analysis || "";
+
+    const situation =
+        text.match(/SITUATION:\s*(.*)/i)?.[1]
+        || "AI analyzed the current environment.";
+
+    const decision =
+        text.match(/ACTION:\s*(.*)/i)?.[1]
+        || "No specific action generated.";
+
+    const reasoning =
+        text.match(/REASON:\s*(.*)/i)?.[1]
+        || "AI reasoning generated successfully.";
+
+    const energySaving =
+        text.match(/ENERGY_SAVING:\s*(.*)/i)?.[1]
+        || "Medium";
+
+    const confidenceMatch =
+        text.match(/CONFIDENCE:\s*(\d+)/i);
+
+    const confidence =
+        confidenceMatch
+            ? Number(confidenceMatch[1])
+            : 85;
+
+    return {
+
+        situation: situation,
+
+        decision: decision,
+
+        reasoning:
+            reasoning +
+            " Energy saving level: " +
+            energySaving,
+
+        confidence: confidence,
+
+        energyAdvice:
+            "AI recommends optimizing appliance usage based on the current sensor conditions.",
+
+        actions: {
+
+            light:
+                sensorData.motion &&
+                sensorData.lightLevel < 50
+                    ? "ON"
+                    : "OFF",
+
+            fan:
+                sensorData.motion &&
+                sensorData.temperature >= 28
+                    ? "ON"
+                    : "OFF",
+
+            ac:
+                sensorData.motion &&
+                sensorData.temperature >= 32
+                    ? "ON"
+                    : "OFF",
+
+            highPowerAppliances:
+                sensorData.energyUsage >= 3
+                    ? "REDUCE"
+                    : "NORMAL"
+        }
+    };
 }
 
 
