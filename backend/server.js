@@ -115,7 +115,7 @@ Keep everything short and suitable for a college project demonstration.
 
         const response = await ai.models.generateContent({
 
-            model: "gemini-3.6-flash",
+            model: "gemini-3.5-flash",
 
             contents: prompt
 
