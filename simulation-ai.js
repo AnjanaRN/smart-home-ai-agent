@@ -187,7 +187,7 @@ async function requestAIAnalysis(data) {
         );
     }
 
-    return result.rawAnalysis;
+    return result.rawAnalysis || "";
 }
 
 
