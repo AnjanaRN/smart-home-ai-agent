@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Smart Home AI | Dashboard</title>
+    <title>Smart Home AI | How It Works</title>
 
     <link rel="stylesheet" href="style.css">
 
@@ -37,7 +37,7 @@
         </a>
 
         <a href="dashboard.html" class="active">
-            Dashboard
+            How It Works
         </a>
 
         <a href="simulation.html">
@@ -50,30 +50,33 @@
 
 
 <!-- =====================================================
-     MAIN DASHBOARD
+     MAIN CONTENT
 ===================================================== -->
 
 <main class="page-container">
 
 
-    <!-- PAGE HEADER -->
+    <!-- =================================================
+         PAGE HEADER
+    ================================================= -->
 
     <section class="page-heading">
 
         <div>
 
             <span class="eyebrow">
-                SMART HOME CONTROL CENTER
+                SMART HOME AI GUIDE
             </span>
 
             <h1>
-                Energy Management
-                <span>Dashboard</span>
+                How SmartHome
+                <span>AI Works</span>
             </h1>
 
             <p>
-                Monitor your home, analyze energy usage,
-                and let the AI agent make intelligent decisions.
+                Learn how the AI agent analyzes your home environment,
+                makes appliance decisions, and helps reduce unnecessary
+                energy consumption.
             </p>
 
         </div>
@@ -83,255 +86,121 @@
 
             <span class="status-dot"></span>
 
-            System Online
+            AI Energy Management
 
         </div>
 
     </section>
 
 
-    <!-- =================================================
-         SENSOR OVERVIEW
-    ================================================= -->
-
-    <section class="sensor-grid">
-
-
-        <div class="sensor-card">
-
-            <div class="sensor-icon">
-                🌡️
-            </div>
-
-            <div>
-
-                <p>
-                    Temperature
-                </p>
-
-                <h2>
-                    <span id="dashboardTemperature">30</span>°C
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="sensor-card">
-
-            <div class="sensor-icon">
-                🚶
-            </div>
-
-            <div>
-
-                <p>
-                    Motion
-                </p>
-
-                <h2 id="dashboardMotion">
-                    Detected
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="sensor-card">
-
-            <div class="sensor-icon">
-                💡
-            </div>
-
-            <div>
-
-                <p>
-                    Light Level
-                </p>
-
-                <h2>
-                    <span id="dashboardLight">30</span>%
-                </h2>
-
-            </div>
-
-        </div>
-
-
-        <div class="sensor-card">
-
-            <div class="sensor-icon">
-                ⚡
-            </div>
-
-            <div>
-
-                <p>
-                    Energy Usage
-                </p>
-
-                <h2>
-                    <span id="dashboardEnergy">3.2</span> kW
-                </h2>
-
-            </div>
-
-        </div>
-
-    </section>
-
 
     <!-- =================================================
-         AI DECISION CENTER
+         HOW IT WORKS
     ================================================= -->
 
     <section class="ai-panel">
-
-
-        <!-- AI HEADER -->
 
         <div class="ai-header">
 
             <div>
 
                 <span class="ai-badge">
-                    🤖 GEMINI AI AGENT
+                    🤖 AI WORKFLOW
                 </span>
 
                 <h2>
-                    Intelligent Decision Center
+                    How the AI Agent Works
                 </h2>
 
                 <p>
-                    The AI analyzes sensor data and decides
-                    how your appliances should operate.
+                    SmartHome AI follows a simple decision-making
+                    process to understand the environment and recommend
+                    energy-efficient appliance usage.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- STEPS -->
+
+        <div class="ai-grid">
+
+
+            <!-- STEP 1 -->
+
+            <div class="ai-card">
+
+                <span>
+                    🌡️
+                </span>
+
+                <small>
+                    STEP 1
+                </small>
+
+                <strong>
+                    Sense
+                </strong>
+
+                <p>
+                    The system collects sensor information such as
+                    temperature, motion, light level, and energy usage.
                 </p>
 
             </div>
 
 
-            <div
-                id="aiStatus"
-                class="ai-status"
-            >
-                ● READY
-            </div>
-
-        </div>
-
-
-        <!-- =================================================
-             CURRENT SITUATION
-        ================================================= -->
-
-        <div class="ai-situation">
-
-            <div class="section-label">
-                CURRENT SITUATION
-            </div>
-
-            <p id="aiSituation">
-                Waiting for the AI agent to analyze
-                your smart home.
-            </p>
-
-        </div>
-
-
-        <!-- =================================================
-             AI DECISION
-        ================================================= -->
-
-        <div class="ai-decision-box">
-
-            <div class="section-label">
-                AI DECISION
-            </div>
-
-            <h3 id="aiDecision">
-                No decision generated yet
-            </h3>
-
-            <p id="aiReasoning">
-                Click "Ask AI Agent" to allow Gemini
-                to analyze the current environment.
-            </p>
-
-        </div>
-
-
-        <!-- =================================================
-             APPLIANCE ACTIONS
-        ================================================= -->
-
-        <div class="section-label appliance-title">
-            APPLIANCE ACTIONS
-        </div>
-
-
-        <div class="ai-grid">
-
-
-            <!-- LIGHT -->
+            <!-- STEP 2 -->
 
             <div class="ai-card">
 
                 <span>
-                    💡
+                    🧠
                 </span>
 
                 <small>
-                    LIGHT
+                    STEP 2
                 </small>
 
-                <strong id="aiLight">
-                    --
+                <strong>
+                    Analyze
                 </strong>
+
+                <p>
+                    Gemini AI evaluates the sensor data to understand
+                    the current condition of the home.
+                </p>
 
             </div>
 
 
-            <!-- FAN -->
+            <!-- STEP 3 -->
 
             <div class="ai-card">
 
                 <span>
-                    🌀
+                    ⚙️
                 </span>
 
                 <small>
-                    FAN
+                    STEP 3
                 </small>
 
-                <strong id="aiFan">
-                    --
+                <strong>
+                    Decide
                 </strong>
+
+                <p>
+                    The AI determines which appliances should remain
+                    ON or be switched OFF.
+                </p>
 
             </div>
 
 
-            <!-- AC -->
-
-            <div class="ai-card">
-
-                <span>
-                    ❄️
-                </span>
-
-                <small>
-                    AC
-                </small>
-
-                <strong id="aiAC">
-                    --
-                </strong>
-
-            </div>
-
-
-            <!-- HIGH POWER -->
+            <!-- STEP 4 -->
 
             <div class="ai-card">
 
@@ -340,53 +209,544 @@
                 </span>
 
                 <small>
-                    HIGH POWER
+                    STEP 4
                 </small>
 
-                <strong id="aiPower">
-                    --
+                <strong>
+                    Optimize
                 </strong>
 
+                <p>
+                    The recommendation aims to reduce unnecessary
+                    electricity consumption.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         WHAT AI MONITORS
+    ================================================= -->
+
+    <section class="appliance-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="eyebrow">
+                    SENSOR INPUTS
+                </span>
+
+                <h2>
+                    What Does the AI Monitor?
+                </h2>
+
+                <p>
+                    These environmental values help the AI understand
+                    what is happening inside the smart home.
+                </p>
+
             </div>
 
         </div>
 
 
-        <!-- =================================================
-             AI CONFIDENCE
-        ================================================= -->
+        <div class="appliance-grid">
 
-        <div class="ai-footer">
 
-            <div class="confidence-wrapper">
+            <!-- TEMPERATURE -->
 
-                <div class="confidence-heading">
+            <div class="appliance-card">
 
-                    <span>
-                        AI Confidence
+                <div class="appliance-top">
+
+                    <span class="big-icon">
+                        🌡️
                     </span>
 
-                    <strong id="confidenceText">
-                        --%
-                    </strong>
+                    <span class="device-status">
+                        INPUT
+                    </span>
 
                 </div>
 
+                <h3>
+                    Temperature
+                </h3>
 
-                <div class="confidence-bar">
+                <p>
+                    Helps determine whether cooling through a fan or
+                    air conditioner may be required.
+                </p>
 
-                    <div id="confidenceBar"></div>
+            </div>
+
+
+            <!-- MOTION -->
+
+            <div class="appliance-card">
+
+                <div class="appliance-top">
+
+                    <span class="big-icon">
+                        👤
+                    </span>
+
+                    <span class="device-status">
+                        INPUT
+                    </span>
 
                 </div>
+
+                <h3>
+                    Motion Detection
+                </h3>
+
+                <p>
+                    Helps identify whether someone is present in the
+                    room or whether the room is empty.
+                </p>
+
+            </div>
+
+
+            <!-- LIGHT -->
+
+            <div class="appliance-card">
+
+                <div class="appliance-top">
+
+                    <span class="big-icon">
+                        💡
+                    </span>
+
+                    <span class="device-status">
+                        INPUT
+                    </span>
+
+                </div>
+
+                <h3>
+                    Light Level
+                </h3>
+
+                <p>
+                    Helps determine whether artificial lighting is
+                    actually required.
+                </p>
+
+            </div>
+
+
+            <!-- ENERGY -->
+
+            <div class="appliance-card">
+
+                <div class="appliance-top">
+
+                    <span class="big-icon">
+                        ⚡
+                    </span>
+
+                    <span class="device-status">
+                        INPUT
+                    </span>
+
+                </div>
+
+                <h3>
+                    Energy Consumption
+                </h3>
+
+                <p>
+                    Helps the AI identify situations where electricity
+                    consumption may be unnecessarily high.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         AI DECISION PROCESS
+    ================================================= -->
+
+    <section class="ai-panel">
+
+        <div class="ai-header">
+
+            <div>
+
+                <span class="ai-badge">
+                    🔍 DECISION PROCESS
+                </span>
+
+                <h2>
+                    How Does the AI Make a Decision?
+                </h2>
+
+                <p>
+                    The agent considers multiple conditions before
+                    generating its recommendation.
+                </p>
 
             </div>
 
         </div>
 
 
-        <!-- =================================================
-             ENERGY ADVICE
-        ================================================= -->
+        <div class="ai-situation">
+
+            <div class="section-label">
+                EXAMPLE
+            </div>
+
+            <p>
+                Imagine the room temperature is 32°C, someone is
+                present, the light level is low, and energy consumption
+                is relatively high.
+            </p>
+
+        </div>
+
+
+        <div class="ai-decision-box">
+
+            <div class="section-label">
+                AI REASONING
+            </div>
+
+            <h3>
+                Balance comfort with energy efficiency
+            </h3>
+
+            <p>
+                The AI can recognize that the room is occupied and
+                warm, while also considering whether lighting and
+                high-power appliances are necessary.
+            </p>
+
+        </div>
+
+
+        <div class="ai-grid">
+
+
+            <div class="ai-card">
+
+                <span>
+                    👤
+                </span>
+
+                <small>
+                    OCCUPANCY
+                </small>
+
+                <strong>
+                    Present
+                </strong>
+
+                <p>
+                    Appliance decisions can be useful when someone is
+                    actually using the room.
+                </p>
+
+            </div>
+
+
+            <div class="ai-card">
+
+                <span>
+                    🌡️
+                </span>
+
+                <small>
+                    TEMPERATURE
+                </small>
+
+                <strong>
+                    High
+                </strong>
+
+                <p>
+                    Cooling requirements are considered based on the
+                    current temperature.
+                </p>
+
+            </div>
+
+
+            <div class="ai-card">
+
+                <span>
+                    💡
+                </span>
+
+                <small>
+                    LIGHTING
+                </small>
+
+                <strong>
+                    Required
+                </strong>
+
+                <p>
+                    Low light levels can indicate that artificial
+                    lighting may be needed.
+                </p>
+
+            </div>
+
+
+            <div class="ai-card">
+
+                <span>
+                    ⚡
+                </span>
+
+                <small>
+                    ENERGY
+                </small>
+
+                <strong>
+                    Monitor
+                </strong>
+
+                <p>
+                    The AI considers whether high-power appliances
+                    should be reduced.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         TIPS AND TRICKS
+    ================================================= -->
+
+    <section class="appliance-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="eyebrow">
+                    ENERGY EFFICIENCY
+                </span>
+
+                <h2>
+                    Tips & Tricks
+                </h2>
+
+                <p>
+                    Simple practices that can help reduce unnecessary
+                    energy consumption in a smart home.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="appliance-grid">
+
+
+            <!-- TIP 1 -->
+
+            <div class="appliance-card">
+
+                <div class="appliance-top">
+
+                    <span class="big-icon">
+                        💡
+                    </span>
+
+                    <span class="device-status">
+                        TIP 01
+                    </span>
+
+                </div>
+
+                <h3>
+                    Use Natural Light
+                </h3>
+
+                <p>
+                    When sufficient natural light is available, avoid
+                    keeping artificial lights switched on unnecessarily.
+                </p>
+
+            </div>
+
+
+            <!-- TIP 2 -->
+
+            <div class="appliance-card">
+
+                <div class="appliance-top">
+
+                    <span class="big-icon">
+                        🚪
+                    </span>
+
+                    <span class="device-status">
+                        TIP 02
+                    </span>
+
+                </div>
+
+                <h3>
+                    Avoid Empty-Room Usage
+                </h3>
+
+                <p>
+                    Turn off lights, fans, and other appliances when
+                    the room is not being used.
+                </p>
+
+            </div>
+
+
+            <!-- TIP 3 -->
+
+            <div class="appliance-card">
+
+                <div class="appliance-top">
+
+                    <span class="big-icon">
+                        🌀
+                    </span>
+
+                    <span class="device-status">
+                        TIP 03
+                    </span>
+
+                </div>
+
+                <h3>
+                    Use Cooling Wisely
+                </h3>
+
+                <p>
+                    Use the appropriate cooling appliance for the
+                    current temperature and occupancy conditions.
+                </p>
+
+            </div>
+
+
+            <!-- TIP 4 -->
+
+            <div class="appliance-card">
+
+                <div class="appliance-top">
+
+                    <span class="big-icon">
+                        🔌
+                    </span>
+
+                    <span class="device-status">
+                        TIP 04
+                    </span>
+
+                </div>
+
+                <h3>
+                    Watch High-Power Devices
+                </h3>
+
+                <p>
+                    Avoid unnecessary simultaneous use of multiple
+                    high-energy appliances.
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         QUICK AI EXAMPLE
+    ================================================= -->
+
+    <section class="ai-panel">
+
+        <div class="ai-header">
+
+            <div>
+
+                <span class="ai-badge">
+                    🤖 SAMPLE AI OUTPUT
+                </span>
+
+                <h2>
+                    What an AI Decision Looks Like
+                </h2>
+
+                <p>
+                    During the simulation, Gemini generates a response
+                    based on the sensor values you provide.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="ai-situation">
+
+            <div class="section-label">
+                SITUATION
+            </div>
+
+            <p>
+                The room is occupied and the temperature is high.
+                Energy consumption also needs to be monitored.
+            </p>
+
+        </div>
+
+
+        <div class="ai-decision-box">
+
+            <div class="section-label">
+                RECOMMENDED ACTION
+            </div>
+
+            <h3>
+                Adjust cooling and reduce unnecessary appliance usage.
+            </h3>
+
+            <p>
+                The AI considers occupancy, temperature, lighting
+                requirements, and energy consumption before generating
+                its recommendation.
+            </p>
+
+        </div>
+
 
         <div class="ai-advice">
 
@@ -397,184 +757,67 @@
             <div>
 
                 <strong>
-                    Energy Optimization Advice
+                    Energy Optimization
                 </strong>
 
-                <p id="energyAdvice">
-                    AI-generated energy recommendations
-                    will appear here.
+                <p>
+                    The objective is to maintain comfort while
+                    minimizing unnecessary electricity consumption.
                 </p>
 
             </div>
 
         </div>
-
-
-        <!-- =================================================
-             ASK AI BUTTON
-        ================================================= -->
-
-        <button
-            id="runAIButton"
-            onclick="runAIAgent()"
-        >
-            🤖 Ask AI Agent
-        </button>
-
 
     </section>
 
 
+
     <!-- =================================================
-         APPLIANCE STATUS
+         TRY SIMULATION
     ================================================= -->
 
-    <section class="appliance-section">
+    <section class="ai-panel">
 
-
-        <div class="section-heading">
+        <div class="ai-header">
 
             <div>
 
-                <span class="eyebrow">
-                    SMART APPLIANCES
+                <span class="ai-badge">
+                    🚀 INTERACTIVE DEMO
                 </span>
 
                 <h2>
-                    Current Appliance Status
+                    Try the AI Yourself
                 </h2>
+
+                <p>
+                    Change the temperature, motion, light level, and
+                    energy consumption values and let Gemini analyze
+                    the environment.
+                </p>
 
             </div>
 
         </div>
 
 
-        <div class="appliance-grid">
+        <div style="text-align: center; margin-top: 25px;">
 
-
-            <!-- LIGHTS -->
-
-            <div class="appliance-card">
-
-                <div class="appliance-top">
-
-                    <span class="big-icon">
-                        💡
-                    </span>
-
-                    <span
-                        id="lightStatus"
-                        class="device-status"
-                    >
-                        ON
-                    </span>
-
-                </div>
-
-                <h3>
-                    Smart Lights
-                </h3>
-
-                <p>
-                    Automatically adjusts lighting
-                    according to room conditions.
-                </p>
-
-            </div>
-
-
-            <!-- FAN -->
-
-            <div class="appliance-card">
-
-                <div class="appliance-top">
-
-                    <span class="big-icon">
-                        🌀
-                    </span>
-
-                    <span
-                        id="fanStatus"
-                        class="device-status"
-                    >
-                        ON
-                    </span>
-
-                </div>
-
-                <h3>
-                    Smart Fan
-                </h3>
-
-                <p>
-                    Provides cooling when the room
-                    temperature increases.
-                </p>
-
-            </div>
-
-
-            <!-- AC -->
-
-            <div class="appliance-card">
-
-                <div class="appliance-top">
-
-                    <span class="big-icon">
-                        ❄️
-                    </span>
-
-                    <span
-                        id="acStatus"
-                        class="device-status"
-                    >
-                        OFF
-                    </span>
-
-                </div>
-
-                <h3>
-                    Air Conditioner
-                </h3>
-
-                <p>
-                    Maintains comfortable temperature
-                    while considering energy consumption.
-                </p>
-
-            </div>
-
-
-            <!-- HIGH POWER -->
-
-            <div class="appliance-card">
-
-                <div class="appliance-top">
-
-                    <span class="big-icon">
-                        🔌
-                    </span>
-
-                    <span
-                        id="powerStatus"
-                        class="device-status"
-                    >
-                        ON
-                    </span>
-
-                </div>
-
-                <h3>
-                    High-Power Devices
-                </h3>
-
-                <p>
-                    AI monitors unnecessary high-energy
-                    appliance usage.
-                </p>
-
-            </div>
-
+            <a
+                href="simulation.html"
+                style="
+                    display: inline-block;
+                    padding: 14px 28px;
+                    border-radius: 10px;
+                    text-decoration: none;
+                    font-weight: 700;
+                    background: #111;
+                    color: white;
+                "
+            >
+                🤖 Open AI Simulation
+            </a>
 
         </div>
 
@@ -582,6 +825,7 @@
 
 
 </main>
+
 
 
 <!-- =====================================================
@@ -596,12 +840,6 @@
 
 </footer>
 
-
-<!-- =====================================================
-     JAVASCRIPT
-===================================================== -->
-
-<script src="script.js"></script>
 
 </body>
 
