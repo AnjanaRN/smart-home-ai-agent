@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Solar Potential Advisor | Smart Home AI</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f8f6;
+            color: #17201b;
+        }
+
+        /* ==============================
+           NAVBAR
+        ============================== */
+
+        nav {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e9e6;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #16834d;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: #16834d;
+        }
+
+        /* ==============================
+           HERO
+        ============================== */
+
+        .hero {
+            text-align: center;
+            padding: 55px 20px 35px;
+        }
+
+        .hero-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
+        }
+
+        .hero h1 {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            max-width: 650px;
+            margin: auto;
+
+            color: #68716c;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        /* ==============================
+           MAIN
+        ============================== */
+
+        .container {
+            width: 90%;
+            max-width: 1050px;
+            margin: auto;
+            padding-bottom: 60px;
+        }
+
+        /* ==============================
+           CALCULATOR CARD
+        ============================== */
+
+        .calculator {
+            background: #ffffff;
+            border: 1px solid #e3e9e5;
+            border-radius: 20px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 8px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .calculator h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .calculator-subtitle {
+            color: #727a75;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            height: 45px;
+
+            border: 1px solid #d9e1dc;
+            border-radius: 10px;
+
+            padding: 0 13px;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: #16834d;
+        }
+
+        .input-help {
+            margin-top: 6px;
+            font-size: 11px;
+            color: #8a918d;
+        }
+
+        .calculate-btn {
+            width: 100%;
+            height: 48px;
+
+            margin-top: 25px;
+
+            border: none;
+            border-radius: 11px;
+
+            background: #16834d;
+            color: white;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .calculate-btn:hover {
+            background: #126d40;
+        }
+
+        /* ==============================
+           RESULTS
+        ============================== */
+
+        #results {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .results-title {
+            font-size: 22px;
+            margin-bottom: 7px;
+        }
+
+        .results-subtitle {
+            color: #727a75;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .result-card {
+            background: #ffffff;
+
+            border: 1px solid #e3e9e5;
+
+            border-radius: 16px;
+
+            padding: 20px;
+        }
+
+        .result-icon {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .result-label {
+            font-size: 12px;
+            color: #737b76;
+            margin-bottom: 6px;
+        }
+
+        .result-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #16834d;
+        }
+
+        /* ==============================
+           RECOMMENDATION
+        ============================== */
+
+        .recommendation {
+            margin-top: 20px;
+
+            background: #eef8f1;
+
+            border: 1px solid #d7ebdc;
+
+            border-radius: 17px;
+
+            padding: 23px;
+        }
+
+        .recommendation h3 {
+            font-size: 17px;
+            margin-bottom: 9px;
+        }
+
+        .recommendation p {
+            font-size: 14px;
+            line-height: 1.65;
+            color: #56615a;
+        }
+
+        /* ==============================
+           DISCLAIMER
+        ============================== */
+
+        .disclaimer {
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background: #fafafa;
+
+            border: 1px solid #e8e8e8;
+
+            border-radius: 12px;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+            color: #777;
+        }
+
+        /* ==============================
+           MOBILE
+        ============================== */
+
+        @media (max-width: 700px) {
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+            }
+
+            .hero h1 {
+                font-size: 27px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================
+     NAVBAR
+========================================== -->
+
+<nav>
+
+    <div class="logo">
+        SmartHome AI
+    </div>
+
+    <div class="nav-links">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="dashboard.html">
+            Guide
+        </a>
+
+        <a href="simulation.html">
+            Simulation
+        </a>
+
+    </div>
+    <a href="solar.html">☀️ Solar Advisor</a>
+
+</nav>
+
+
+<!-- ==========================================
+     HERO
+========================================== -->
+
+<section class="hero">
+
+    <div class="hero-icon">
+        ☀️
+    </div>
+
+    <h1>
+        Solar Potential Advisor
+    </h1>
+
+    <p>
+        Find out how much rooftop solar you could install,
+        how much it may cost, and how much electricity
+        you could potentially save.
+    </p>
+
+</section>
+
+
+<div class="container">
+
+
+<!-- ==========================================
+     CALCULATOR
+========================================== -->
+
+<div class="calculator">
+
+    <h2>
+        Calculate Your Solar Potential
+    </h2>
+
+    <p class="calculator-subtitle">
+        Enter your home's basic information to get an
+        estimated solar plan.
+    </p>
+
+
+    <div class="form-grid">
+
+
+        <!-- Roof Area -->
+
+        <div class="form-group">
+
+            <label>
+                Roof Area
+            </label>
+
+            <input
+                type="number"
+                id="roofArea"
+                placeholder="e.g. 1000"
+                min="100">
+
+            <span class="input-help">
+                Enter available roof area in sq.ft
+            </span>
+
+        </div>
+
+
+        <!-- Monthly Bill -->
+
+        <div class="form-group">
+
+            <label>
+                Average Monthly Electricity Bill
+            </label>
+
+            <input
+                type="number"
+                id="monthlyBill"
+                placeholder="e.g. 3000"
+                min="0">
+
+            <span class="input-help">
+                Approximate amount paid per month in ₹
+            </span>
+
+        </div>
+
+
+        <!-- Monthly Units -->
+
+        <div class="form-group">
+
+            <label>
+                Average Monthly Consumption
+            </label>
+
+            <input
+                type="number"
+                id="monthlyUnits"
+                placeholder="e.g. 250"
+                min="0">
+
+            <span class="input-help">
+                Electricity consumption in kWh / units
+            </span>
+
+        </div>
+
+
+        <!-- Electricity Rate -->
+
+        <div class="form-group">
+
+            <label>
+                Approximate Electricity Rate
+            </label>
+
+            <input
+                type="number"
+                id="electricityRate"
+                value="10"
+                min="1"
+                step="0.1">
+
+            <span class="input-help">
+                ₹ per unit — change according to your bill
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <button
+        class="calculate-btn"
+        onclick="calculateSolar()">
+
+        ☀️ Calculate My Solar Potential
+
+    </button>
+
+</div>
+
+
+<!-- ==========================================
+     RESULTS
+========================================== -->
+
+<div id="results">
+
+    <h2 class="results-title">
+        Your Solar Potential
+    </h2>
+
+    <p class="results-subtitle">
+        These values are estimates based on the information
+        you provided.
+    </p>
+
+
+    <div class="result-grid">
+
+
+        <!-- Solar Capacity -->
+
+        <div class="result-card">
+
+            <div class="result-icon">
+                ☀️
+            </div>
+
+            <div class="result-label">
+                Recommended System
+            </div>
+
+            <div
+                class="result-value"
+                id="solarCapacity">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <!-- Roof Requirement -->
+
+        <div class="result-card">
+
+            <div class="result-icon">
+                📐
+            </div>
+
+            <div class="result-label">
+                Approx. Roof Required
+            </div>
+
+            <div
+                class="result-value"
+                id="roofRequired">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <!-- Generation -->
+
+        <div class="result-card">
+
+            <div class="result-icon">
+                ⚡
+            </div>
+
+            <div class="result-label">
+                Estimated Annual Generation
+            </div>
+
+            <div
+                class="result-value"
+                id="annualGeneration">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <!-- Installation -->
+
+        <div class="result-card">
+
+            <div class="result-icon">
+                💰
+            </div>
+
+            <div class="result-label">
+                Estimated Installation
+            </div>
+
+            <div
+                class="result-value"
+                id="installationCost">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <!-- Subsidy -->
+
+        <div class="result-card">
+
+            <div class="result-icon">
+                🎁
+            </div>
+
+            <div class="result-label">
+                Estimated Subsidy
+            </div>
+
+            <div
+                class="result-value"
+                id="subsidy">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <!-- Net Cost -->
+
+        <div class="result-card">
+
+            <div class="result-icon">
+                💵
+            </div>
+
+            <div class="result-label">
+                Estimated Net Cost
+            </div>
+
+            <div
+                class="result-value"
+                id="netCost">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <!-- Annual Savings -->
+
+        <div class="result-card">
+
+            <div class="result-icon">
+                💸
+            </div>
+
+            <div class="result-label">
+                Estimated Annual Savings
+            </div>
+
+            <div
+                class="result-value"
+                id="annualSavings">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <!-- Payback -->
+
+        <div class="result-card">
+
+            <div class="result-icon">
+                ⏳
+            </div>
+
+            <div class="result-label">
+                Approx. Payback Period
+            </div>
+
+            <div
+                class="result-value"
+                id="payback">
+
+                --
+
+            </div>
+
+        </div>
+
+
+        <!-- CO2 -->
+
+        <div class="result-card">
+
+            <div class="result-icon">
+                🌱
+            </div>
+
+            <div class="result-label">
+                Estimated CO₂ Reduction
+            </div>
+
+            <div
+                class="result-value"
+                id="co2">
+
+                --
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ======================================
+         RECOMMENDATION
+    ======================================= -->
+
+    <div class="recommendation">
+
+        <h3>
+            🤖 Smart Home Recommendation
+        </h3>
+
+        <p id="recommendationText">
+            --
+        </p>
+
+    </div>
+
+
+    <!-- ======================================
+         DISCLAIMER
+    ======================================= -->
+
+    <div class="disclaimer">
+
+        <strong>Important:</strong>
+        These calculations are approximate estimates
+        for demonstration purposes. Actual solar generation,
+        installation cost, subsidy eligibility, electricity
+        savings and payback period depend on factors such as
+        roof orientation, shading, location, system components,
+        electricity tariff, vendor pricing and applicable
+        government/DISCOM rules.
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   SOLAR CALCULATOR
+========================================================= */
+
+function calculateSolar() {
+
+    const roofArea =
+        Number(
+            document.getElementById("roofArea").value
+        );
+
+    const monthlyBill =
+        Number(
+            document.getElementById("monthlyBill").value
+        );
+
+    const monthlyUnits =
+        Number(
+            document.getElementById("monthlyUnits").value
+        );
+
+    const electricityRate =
+        Number(
+            document.getElementById("electricityRate").value
+        );
+
+
+    /* ==============================
+       VALIDATION
+    ============================== */
+
+    if (
+        !roofArea ||
+        roofArea <= 0
+    ) {
+
+        alert("Please enter your roof area.");
+
+        return;
+
+    }
+
+
+    if (
+        !monthlyBill ||
+        monthlyBill <= 0
+    ) {
+
+        alert("Please enter your monthly electricity bill.");
+
+        return;
+
+    }
+
+
+    if (
+        !monthlyUnits ||
+        monthlyUnits <= 0
+    ) {
+
+        alert("Please enter your monthly electricity consumption.");
+
+        return;
+
+    }
+
+
+    if (
+        !electricityRate ||
+        electricityRate <= 0
+    ) {
+
+        alert("Please enter your electricity rate.");
+
+        return;
+
+    }
+
+
+    /* ==============================
+       ROOF CAPACITY
+       
+       Approx. 100 sq.ft / kW
+    ============================== */
+
+    const roofBasedCapacity =
+        roofArea / 100;
+
+
+    /*
+       Don't recommend a system larger
+       than the estimated requirement
+       based on monthly consumption.
+
+       Approx. 120 units/month/year
+       per 1 kW system.
+    */
+
+    const usageBasedCapacity =
+        monthlyUnits / 120;
+
+
+    let recommendedCapacity =
+        Math.min(
+            roofBasedCapacity,
+            usageBasedCapacity
+        );
+
+
+    /*
+       Round to nearest 0.5 kW
+    */
+
+    recommendedCapacity =
+        Math.floor(
+            recommendedCapacity * 2
+        ) / 2;
+
+
+    /*
+       Minimum practical demonstration
+       capacity.
+    */
+
+    if (
+        recommendedCapacity < 1
+    ) {
+
+        recommendedCapacity = 1;
+
+    }
+
+
+    /* ==============================
+       ROOF REQUIREMENT
+    ============================== */
+
+    const requiredRoof =
+        recommendedCapacity * 100;
+
+
+    /* ==============================
+       ANNUAL GENERATION
+       
+       Approx. 1,500 units / kW / year
+    ============================== */
+
+    const annualGeneration =
+        recommendedCapacity * 1500;
+
+
+    /* ==============================
+       INSTALLATION COST
+       
+       Demonstration estimate:
+       ₹55,000 - ₹70,000 per kW
+    ============================== */
+
+    const minCost =
+        recommendedCapacity * 55000;
+
+    const maxCost =
+        recommendedCapacity * 70000;
+
+
+    /* ==============================
+       CENTRAL SUBSIDY
+       
+       ₹30,000/kW for first 2 kW
+       ₹18,000 for additional 1 kW
+       Maximum ₹78,000
+    ============================== */
+
+    let subsidy = 0;
+
+
+    if (
+        recommendedCapacity <= 2
+    ) {
+
+        subsidy =
+            recommendedCapacity * 30000;
+
+    } else {
+
+        subsidy =
+            60000 +
+            Math.min(
+                recommendedCapacity - 2,
+                1
+            ) * 18000;
+
+    }
+
+
+    subsidy =
+        Math.min(
+            subsidy,
+            78000
+        );
+
+
+    /* ==============================
+       NET COST
+    ============================== */
+
+    const minNetCost =
+        Math.max(
+            0,
+            minCost - subsidy
+        );
+
+    const maxNetCost =
+        Math.max(
+            0,
+            maxCost - subsidy
+        );
+
+
+    /* ==============================
+       ANNUAL SAVINGS
+    ============================== */
+
+    const maximumAnnualSavings =
+        monthlyUnits *
+        12 *
+        electricityRate;
+
+
+    const solarOffset =
+        Math.min(
+            annualGeneration,
+            monthlyUnits * 12
+        );
+
+
+    const annualSavings =
+        solarOffset *
+        electricityRate;
+
+
+    /* ==============================
+       PAYBACK
+    ============================== */
+
+    const averageNetCost =
+        (minNetCost + maxNetCost) / 2;
+
+
+    const payback =
+        annualSavings > 0
+            ? averageNetCost /
+              annualSavings
+            : 0;
+
+
+    /* ==============================
+       CO2 REDUCTION
+       
+       Approx. 0.7 kg CO2 / unit
+    ============================== */
+
+    const co2Reduction =
+        annualGeneration *
+        0.7 /
+        1000;
+
+
+    /* ==============================
+       DISPLAY RESULTS
+    ============================== */
+
+    document.getElementById(
+        "solarCapacity"
+    ).textContent =
+        recommendedCapacity.toFixed(1) +
+        " kW";
+
+
+    document.getElementById(
+        "roofRequired"
+    ).textContent =
+        Math.round(requiredRoof) +
+        " sq.ft";
+
+
+    document.getElementById(
+        "annualGeneration"
+    ).textContent =
+        Math.round(annualGeneration) +
+        " units";
+
+
+    document.getElementById(
+        "installationCost"
+    ).textContent =
+        "₹" +
+        formatNumber(minCost) +
+        " – ₹" +
+        formatNumber(maxCost);
+
+
+    document.getElementById(
+        "subsidy"
+    ).textContent =
+        "₹" +
+        formatNumber(subsidy);
+
+
+    document.getElementById(
+        "netCost"
+    ).textContent =
+        "₹" +
+        formatNumber(minNetCost) +
+        " – ₹" +
+        formatNumber(maxNetCost);
+
+
+    document.getElementById(
+        "annualSavings"
+    ).textContent =
+        "₹" +
+        formatNumber(annualSavings);
+
+
+    document.getElementById(
+        "payback"
+    ).textContent =
+        payback.toFixed(1) +
+        " years";
+
+
+    document.getElementById(
+        "co2"
+    ).textContent =
+        co2Reduction.toFixed(2) +
+        " tonnes/year";
+
+
+    /* ==============================
+       AI-STYLE RECOMMENDATION
+    ============================== */
+
+    let recommendation = "";
+
+
+    if (
+        recommendedCapacity >= 3
+    ) {
+
+        recommendation =
+            "Based on the roof area and electricity consumption " +
+            "you entered, your home has room for a meaningful " +
+            "rooftop solar system. A system of approximately " +
+            recommendedCapacity.toFixed(1) +
+            " kW could offset a portion of your annual grid " +
+            "electricity use. Before installation, compare " +
+            "vendor quotations and check your roof's sunlight " +
+            "exposure and local DISCOM requirements.";
+
+    } else {
+
+        recommendation =
+            "Your estimated electricity consumption and roof " +
+            "area suggest a smaller rooftop solar system may " +
+            "be suitable. A system of approximately " +
+            recommendedCapacity.toFixed(1) +
+            " kW could help reduce grid electricity usage. " +
+            "Actual savings will depend on your tariff, " +
+            "sunlight availability and installation cost.";
+
+    }
+
+
+    document.getElementById(
+        "recommendationText"
+    ).textContent =
+        recommendation;
+
+
+    /* ==============================
+       SHOW RESULTS
+    ============================== */
+
+    document.getElementById(
+        "results"
+    ).style.display =
+        "block";
+
+
+    /* Scroll */
+
+    document.getElementById(
+        "results"
+    ).scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+
+/* =========================================================
+   NUMBER FORMATTER
+========================================================= */
+
+function formatNumber(number) {
+
+    return Math.round(number)
+        .toLocaleString("en-IN");
+
+}
+
+</script>
+
+
+</body>
+
+</html>
